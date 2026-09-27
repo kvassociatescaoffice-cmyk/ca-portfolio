@@ -78,7 +78,7 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/stats`);
+      const res = await fetch(`/api/admin/stats`, { cache: 'no-store' });
       if (res.status === 401) return handleLogout();
       const data = await res.json();
       if (data.success) {
@@ -371,7 +371,7 @@ export default function AdminDashboard() {
                             <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--dim)', fontSize: 12 }} />
                             <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--dim)', fontSize: 12 }} />
                             <Tooltip cursor={{ fill: 'rgba(0,0,0,0.02)' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }} />
-                            <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                            <Bar dataKey="value" radius={[6, 6, 0, 0]} minPointSize={5}>
                               {
                                 [
                                   { name: 'Leads', value: stats.counts.leads, fill: '#10b981' },
