@@ -11,20 +11,25 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Thank you! Your message has been received.");
-        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-      } else {
-        toast.error(data.message || "Something went wrong.");
-      }
+      await toast.promise(
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        }).then(async res => {
+          const data = await res.json();
+          if (!data.success) throw new Error(data.message || "Something went wrong.");
+          return data;
+        }),
+        {
+          pending: 'Sending your message...',
+          success: 'Thank you! Your message has been received.',
+          error: 'Failed to send message. Please try again.'
+        }
+      );
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err) {
-      toast.error("Network error. Please try again.");
+      console.error(err);
     }
     setIsSubmitting(false);
   };

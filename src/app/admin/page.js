@@ -340,6 +340,18 @@ export default function AdminDashboard() {
                     <strong style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--navy-900)' }}><Mail size={16} /> Original Message</strong>
                     <p style={{ marginTop: '12px', whiteSpace: 'pre-wrap', lineHeight: '1.7', color: 'var(--navy-800)' }}>{viewingLead.message || 'No message provided.'}</p>
                   </div>
+                  
+                  <div style={{ display: 'flex', gap: '16px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    <a href={`mailto:${viewingLead.email}?subject=Re: Your Inquiry at KV Associates`} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--navy-900)', color: '#fff', padding: '12px 24px', borderRadius: '30px', textDecoration: 'none', fontWeight: '600', transition: 'all 0.2s', boxShadow: '0 4px 10px rgba(15, 23, 42, 0.2)' }} className="hover-scale">
+                      <Mail size={16} /> Reply via Email
+                    </a>
+                    {viewingLead.phone && (
+                      <a href={`https://wa.me/${viewingLead.phone.replace(/[^0-9]/g, '')}?text=Hi%20${viewingLead.name},%20we%20received%20your%20inquiry.`} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#25D366', color: '#fff', padding: '12px 24px', borderRadius: '30px', textDecoration: 'none', fontWeight: '600', transition: 'all 0.2s', boxShadow: '0 4px 10px rgba(37, 211, 102, 0.2)' }} className="hover-scale">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 
+                        WhatsApp Chat
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
