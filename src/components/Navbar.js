@@ -14,9 +14,23 @@ export default function Navbar() {
 
   return (
     <nav id="nav">
-      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '900', fontSize: '1.6rem', color: '#fff', letterSpacing: '0.5px', zIndex: 100 }}>
+      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
         <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
-        KVA
+        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
+          <span style={{ 
+            background: 'linear-gradient(100deg, var(--gold), #ffdf91)', 
+            WebkitBackgroundClip: 'text', 
+            WebkitTextFillColor: 'transparent',
+            fontWeight: '800', 
+            fontSize: '1.25rem',
+            whiteSpace: 'nowrap'
+          }}>
+            Kumar Vashishtha
+          </span>
+          <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: '500', letterSpacing: '0.5px', opacity: 0.9 }}>
+            & Associates
+          </span>
+        </div>
       </Link>
       <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none">

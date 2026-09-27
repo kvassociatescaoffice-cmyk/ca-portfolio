@@ -5,8 +5,24 @@ export default function Footer() {
     <footer>
       <div className="foot-top">
         <div className="foot-brand">
-          <h3 style={{color: '#fff', fontSize: '1.5rem', fontFamily: 'var(--font-fraunces)'}}>KVA</h3>
-          <p>Empowering your business with strategic financial insight, uncompromising integrity, and rigorous compliance.</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
+              <span style={{ 
+                background: 'linear-gradient(100deg, var(--gold), #ffdf91)', 
+                WebkitBackgroundClip: 'text', 
+                WebkitTextFillColor: 'transparent',
+                fontWeight: '800', 
+                fontSize: '1.4rem'
+              }}>
+                Kumar Vashishtha
+              </span>
+              <span style={{ color: '#fff', fontSize: '0.9rem', fontWeight: '500', letterSpacing: '0.5px', opacity: 0.9 }}>
+                & Associates
+              </span>
+            </div>
+          </div>
+          <p style={{ marginTop: '16px' }}>Empowering your business with strategic financial insight, uncompromising integrity, and rigorous compliance.</p>
         </div>
         <div>
           <h4>Quick Links</h4>

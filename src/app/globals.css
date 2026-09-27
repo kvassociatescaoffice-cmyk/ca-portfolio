@@ -524,3 +524,5 @@ footer ul a:hover{color:var(--gold)}
   /* FAQ */
   .faq-grid { padding: 0 20px; }
 }
+@media(max-width: 600px) { .brand { max-width: 70vw; } .brand span { white-space: normal !important; font-size: 1.1rem; line-height: 1.1; } }
+@media(max-width: 900px) { #nav { justify-content: center; position: relative; } .mobile-toggle { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin: 0; } }
