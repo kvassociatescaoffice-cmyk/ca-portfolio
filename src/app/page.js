@@ -140,8 +140,8 @@ export default function Home() {
               <li>Tech-driven filing and reporting infrastructure</li>
             </ul>
           </div>
-          <div className="art" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img src="/images/why_choose_us.jpg" alt="Why Choose Us" style={{ width: '100%', maxWidth: '400px', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src="/images/why_choose_us.jpg" alt="Why Choose Us" style={{ width: '100%', maxWidth: '480px', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }} />
           </div>
         </div>
       </section>
