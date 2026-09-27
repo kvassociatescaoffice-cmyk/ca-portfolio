@@ -232,7 +232,7 @@ export default function AdminDashboard() {
       <header style={{ 
         background: 'rgba(15, 23, 42, 0.95)', 
         backdropFilter: 'blur(10px)',
-        padding: '16px 5%', 
+        padding: '16px 32px', 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
@@ -282,7 +282,7 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div style={{ display: 'flex', maxWidth: '1440px', margin: '0 auto', padding: '40px 5%', gap: '40px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', maxWidth: '1800px', width: '100%', margin: '0 auto', padding: '40px 32px', gap: '40px', flexWrap: 'wrap' }}>
         
         {/* Floating Glassmorphic Sidebar */}
         <aside style={{ 
