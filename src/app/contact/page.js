@@ -1,35 +1,35 @@
 export default function Contact() {
   return (
-    <div className="container section animate-fade-in">
-      <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>Contact Us</h1>
-      <div style={styles.grid}>
-        <div style={styles.info} className="glass">
-          <h3>Our Office</h3>
-          <p>123 Financial District<br/>New Delhi, India 110001</p>
+    <section>
+      <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Contact Us</h1>
+      <div className="contact">
+        <div style={styles.info}>
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--navy-800)' }}>Our Office</h3>
+          <p style={{ color: 'var(--ink)' }}>123 Financial District<br/>New Delhi, India 110001</p>
           <br/>
-          <h3>Contact Details</h3>
-          <p>Email: info@vjaclone.example.com</p>
-          <p>Phone: +91 98765 43210</p>
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--navy-800)' }}>Contact Details</h3>
+          <p style={{ color: 'var(--ink)' }}>Email: info@vjaclone.example.com</p>
+          <p style={{ color: 'var(--ink)' }}>Phone: +91 98765 43210</p>
         </div>
-        <div style={styles.formContainer} className="glass">
+        <div>
           <form style={styles.form}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Name</label>
-              <input type="text" style={styles.input} required />
+            <div className="field">
+              <label>Name</label>
+              <input type="text" required />
             </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Email</label>
-              <input type="email" style={styles.input} required />
+            <div className="field">
+              <label>Email</label>
+              <input type="email" required />
             </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Message</label>
-              <textarea style={{...styles.input, minHeight: '120px'}} required></textarea>
+            <div className="field">
+              <label>Message</label>
+              <textarea style={{ minHeight: '120px' }} required></textarea>
             </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Send Message</button>
+            <button type="submit" className="btn solid" style={{ width: '100%' }}>Send Message</button>
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -1,19 +1,17 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('adminAuth') === 'true';
+    }
+    return false;
+  });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  // Check if already logged in (simple mock using localStorage)
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -60,7 +58,7 @@ export default function AdminPage() {
             <button type="submit" className="btn btn-primary" style={{ marginTop: '0.5rem' }}>Login</button>
           </form>
           <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-            <a href="/" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>&larr; Back to Public Site</a>
+            <Link href="/" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>&larr; Back to Public Site</Link>
           </div>
         </div>
       </div>

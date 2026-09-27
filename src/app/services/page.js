@@ -32,8 +32,8 @@ export default function Services() {
   const [activeTab, setActiveTab] = useState(servicesData[0]);
 
   return (
-    <div className="container section animate-fade-in">
-      <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>Our Services</h1>
+    <section>
+      <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Our Services</h1>
       
       <div style={styles.container}>
         {/* Sidebar Tabs */}
@@ -53,19 +53,19 @@ export default function Services() {
         </div>
 
         {/* Dynamic Content Panel */}
-        <div style={styles.contentPanel} className="glass">
-          <h2 style={{ fontSize: '2rem', color: 'var(--primary)' }}>{activeTab.title}</h2>
-          <p style={{ fontSize: '1.1rem', color: 'var(--secondary)', marginBottom: '1.5rem', fontWeight: 500 }}>
+        <div style={styles.contentPanel}>
+          <h2 style={{ fontSize: '2rem', color: 'var(--navy-800)' }}>{activeTab.title}</h2>
+          <p style={{ fontSize: '1.1rem', color: 'var(--ink)', marginBottom: '1.5rem', fontWeight: 500 }}>
             {activeTab.desc}
           </p>
-          <div style={{ height: '1px', background: 'var(--border)', marginBottom: '1.5rem' }}></div>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+          <div style={{ height: '1px', background: 'var(--line)', marginBottom: '1.5rem' }}></div>
+          <p style={{ color: 'var(--dim)', lineHeight: '1.8' }}>
             {activeTab.details}
           </p>
-          <button className="btn btn-primary" style={{ marginTop: '2rem' }}>Request Consultation</button>
+          <button className="btn solid" style={{ marginTop: '2rem' }}>Request Consultation</button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

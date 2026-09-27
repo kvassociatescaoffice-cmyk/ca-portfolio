@@ -12,7 +12,7 @@ export default function Reviews() {
     <div className="container section animate-fade-in">
       <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>Client Testimonials</h1>
       <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.1rem' }}>
-        Don't just take our word for it. Here's what our esteemed clients have to say about our services.
+        Don&apos;t just take our word for it. Here&apos;s what our esteemed clients have to say about our services.
       </p>
 
       <div style={styles.grid}>
@@ -22,7 +22,7 @@ export default function Reviews() {
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </div>
             <p style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontStyle: 'italic', marginBottom: '1.5rem', lineHeight: 1.7 }}>
-              "{review.text}"
+              &quot;{review.text}&quot;
             </p>
             <div>
               <p style={{ fontWeight: 700, color: 'var(--primary)' }}>{review.name}</p>

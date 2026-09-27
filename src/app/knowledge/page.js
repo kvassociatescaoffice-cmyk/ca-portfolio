@@ -20,9 +20,9 @@ export default function KnowledgeCenter() {
     : articles.filter(a => a.tag === activeTag);
 
   return (
-    <div className="container section animate-fade-in">
-      <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>Knowledge Center</h1>
-      <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.1rem' }}>
+    <section>
+      <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Knowledge Center</h1>
+      <p style={{ textAlign: 'center', color: 'var(--dim)', marginBottom: '3rem', fontSize: '1.1rem' }}>
         Stay updated with the latest circulars, analysis, and insights from our experts.
       </p>
 
@@ -45,15 +45,15 @@ export default function KnowledgeCenter() {
       {/* Grid */}
       <div style={styles.grid}>
         {filteredArticles.map(article => (
-          <div key={article.id} style={styles.card} className="glass">
+          <div key={article.id} style={styles.card} className="insight">
             <span style={styles.tagBadge}>{article.tag}</span>
             <h3 style={{ marginTop: '1rem', fontSize: '1.25rem', marginBottom: '0.5rem' }}>{article.title}</h3>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>{article.date}</p>
-            <a href="#" style={{ color: 'var(--secondary)', fontWeight: 600 }}>Read Article &rarr;</a>
+            <p style={{ color: 'var(--dim)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>{article.date}</p>
+            <a href="#" style={{ color: 'var(--orange)', fontWeight: 600 }}>Read Article &rarr;</a>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

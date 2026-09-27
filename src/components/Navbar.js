@@ -1,239 +1,116 @@
 'use client';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Home, Info, Briefcase, FileText, Mail, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navItems = [
-    { name: 'Home', path: '/', icon: Home },
-    { name: 'About', path: '/about', icon: Info },
-    { name: 'Services', path: '/services', icon: Briefcase },
-    { name: 'Resources', path: '/knowledge', icon: FileText },
-    { name: 'Contact', path: '/contact', icon: Mail },
-  ];
-
   return (
-    <div style={styles.navWrapper}>
-      <nav style={{...styles.navbar, ...(isScrolled ? styles.navbarScrolled : {})}}>
-        <div style={styles.container}>
-          {/* Logo Section */}
-          <Link href="/" style={styles.logoContainer}>
-            <div style={styles.logoCircle}>
-              <Image src="/images/Logo.png" alt="Logo" width={28} height={28} style={{ objectFit: 'contain' }} />
+    <nav id="nav">
+      <Link href="/" className="brand">
+        <div className="badge">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="#0d1d3a" />
+            <text x="12" y="11" textAnchor="middle" fill="#f0663f" fontFamily="Fraunces,serif" fontSize="9" fontWeight="600">CA</text>
+            <text x="12" y="18" textAnchor="middle" fill="#c99a52" fontFamily="Inter,sans-serif" fontSize="3.6" letterSpacing="1">INDIA</text>
+            <circle cx="12" cy="12" r="10.3" fill="none" stroke="#1a3d8f" strokeWidth="1" />
+          </svg>
+        </div>
+        KVA
+      </Link>
+      <div className="navlinks">
+        <Link className={pathname === '/' ? 'active' : ''} href="/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M4 11l8-7 8 7M6 10v10h12V10" />
+          </svg>
+          Home
+        </Link>
+        <Link className={pathname === '/about' ? 'active' : ''} href="/about">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8h.01M11 12h1v5h1" />
+          </svg>
+          About
+        </Link>
+        <div className="dropdown">
+          <Link className={pathname.startsWith('/services') ? 'active' : ''} href="/services">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <rect x="4" y="8" width="16" height="11" rx="1" />
+              <path d="M9 8V6a2 2 0 012-2h2a2 2 0 012 2v2" />
+            </svg>
+            Services
+            <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </Link>
+          <div className="megamenu">
+            <div className="mega-grid">
+              <div className="mega-col">
+                <Link href="/services#audit"><h4>Audit & Assurance &rarr;</h4></Link>
+                <ul>
+                  <li>Statutory Audit</li>
+                  <li>Internal Audit</li>
+                  <li>Tax Audit</li>
+                  <li>Risk Management</li>
+                </ul>
+              </div>
+              <div className="mega-col">
+                <Link href="/services#tax"><h4>Direct Taxation &rarr;</h4></Link>
+                <ul>
+                  <li>Corporate Tax Planning</li>
+                  <li>Tax Compliance</li>
+                  <li>Assessments</li>
+                  <li>Appellate Representation</li>
+                </ul>
+              </div>
+              <div className="mega-col">
+                <Link href="/services#gst"><h4>GST & Indirect Tax &rarr;</h4></Link>
+                <ul>
+                  <li>GST Advisory</li>
+                  <li>GST Filing</li>
+                  <li>GST Assessments</li>
+                  <li>Compliance Checks</li>
+                </ul>
+              </div>
+              <div className="mega-col">
+                <Link href="/services#corporate"><h4>Corporate Law &rarr;</h4></Link>
+                <ul>
+                  <li>Company Incorporation</li>
+                  <li>Secretarial Services</li>
+                  <li>Restructuring</li>
+                  <li>M&A Support</li>
+                </ul>
+              </div>
             </div>
-            <span style={styles.logoText}>KVA</span>
-          </Link>
-          
-          {/* Desktop Links */}
-          <div style={styles.navLinks}>
-            {navItems.map((item) => {
-              const isActive = pathname === item.path;
-              const Icon = item.icon;
-              return (
-                <Link 
-                  key={item.name} 
-                  href={item.path} 
-                  style={{...styles.link, ...(isActive ? styles.linkActive : {})}}
-                >
-                  <Icon size={14} style={{ marginRight: '6px', opacity: isActive ? 1 : 0.7 }} />
-                  {item.name}
-                </Link>
-              );
-            })}
+            
+            <div className="mega-banner">
+              <div className="mega-banner-text">
+                <strong>Special Offer: Free Initial Consultation</strong>
+                <span>Contact us now and transform your business compliance strategy today!</span>
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <Link href="/contact" className="btn solid" style={{ padding: '10px 20px' }}>Call Now</Link>
+                <Link href="/contact" className="btn ghost" style={{ padding: '10px 20px', color: 'var(--navy-900)', borderColor: 'var(--navy-900)' }}>WhatsApp</Link>
+              </div>
+            </div>
           </div>
-
-          {/* CTA Button */}
-          <div style={styles.ctaContainer}>
-            <Link href="/contact" style={styles.btnPrimary}>
-              Get Started
-            </Link>
-          </div>
-          
-          {/* Mobile Menu Toggle */}
-          <button 
-            style={styles.mobileToggle} 
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      {isOpen && (
-        <div style={styles.mobileMenu}>
-          {navItems.map((item) => {
-            const isActive = pathname === item.path;
-            const Icon = item.icon;
-            return (
-              <Link 
-                key={item.name} 
-                href={item.path} 
-                style={{...styles.mobileLink, ...(isActive ? styles.mobileLinkActive : {})}}
-                onClick={() => setIsOpen(false)}
-              >
-                <Icon size={18} style={{ marginRight: '12px' }} />
-                {item.name}
-              </Link>
-            );
-          })}
-          <Link href="/contact" style={{...styles.btnPrimary, marginTop: '1rem', width: '100%', textAlign: 'center'}} onClick={() => setIsOpen(false)}>
-            Get Started
-          </Link>
-        </div>
-      )}
-    </div>
+        <Link className={pathname === '/knowledge' ? 'active' : ''} href="/knowledge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <path d="M6 3h9l3 3v15H6z" />
+            <path d="M9 11h6M9 15h6" />
+          </svg>
+          Resources
+        </Link>
+        <Link className={pathname === '/contact' ? 'active' : ''} href="/contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <rect x="3" y="5" width="18" height="14" rx="1" />
+            <path d="M3 6l9 7 9-7" />
+          </svg>
+          Contact
+        </Link>
+      </div>
+      <Link className="navcta" href="/contact">Get Started</Link>
+    </nav>
   );
 }
-
-const styles = {
-  navWrapper: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 100,
-    padding: '1.5rem',
-    display: 'flex',
-    justifyContent: 'center',
-    pointerEvents: 'none',
-  },
-  navbar: {
-    backgroundColor: 'rgba(30, 41, 59, 0.65)',
-    backdropFilter: 'blur(16px)',
-    WebkitBackdropFilter: 'blur(16px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '9999px',
-    padding: '0.5rem 0.5rem 0.5rem 1rem',
-    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-    pointerEvents: 'auto',
-    width: '100%',
-    maxWidth: '1000px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
-  },
-  navbarScrolled: {
-    backgroundColor: 'rgba(15, 23, 42, 0.85)',
-    boxShadow: '0 15px 40px rgba(0,0,0,0.4)',
-    transform: 'translateY(-5px)',
-  },
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-  logoContainer: {
-    textDecoration: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-  },
-  logoCircle: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    backgroundColor: '#ffffff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  logoText: {
-    fontSize: '1.25rem',
-    fontWeight: '700',
-    color: '#ffffff',
-    letterSpacing: '0.5px',
-  },
-  navLinks: {
-    display: 'flex',
-    gap: '0.25rem',
-    alignItems: 'center',
-    '@media (max-width: 900px)': {
-      display: 'none',
-    }
-  },
-  link: {
-    color: '#cbd5e1',
-    fontSize: '0.9rem',
-    fontWeight: '500',
-    textDecoration: 'none',
-    padding: '0.6rem 1rem',
-    borderRadius: '9999px',
-    display: 'flex',
-    alignItems: 'center',
-    transition: 'all 0.2s',
-  },
-  linkActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    color: '#ffffff',
-  },
-  ctaContainer: {
-    display: 'block',
-  },
-  btnPrimary: {
-    backgroundColor: '#ff6b6b', // Coral/Red
-    color: '#ffffff',
-    padding: '0.6rem 1.5rem',
-    borderRadius: '9999px',
-    fontWeight: '600',
-    fontSize: '0.9rem',
-    textDecoration: 'none',
-    display: 'inline-block',
-    transition: 'all 0.2s',
-    boxShadow: '0 4px 15px rgba(255, 107, 107, 0.4)',
-  },
-  mobileToggle: {
-    display: 'none',
-    background: 'none',
-    border: 'none',
-    color: '#ffffff',
-    cursor: 'pointer',
-    padding: '0.5rem',
-  },
-  mobileMenu: {
-    position: 'absolute',
-    top: '5rem',
-    left: '1.5rem',
-    right: '1.5rem',
-    backgroundColor: 'rgba(30, 41, 59, 0.95)',
-    backdropFilter: 'blur(16px)',
-    WebkitBackdropFilter: 'blur(16px)',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    borderRadius: '16px',
-    padding: '1.5rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-    pointerEvents: 'auto',
-  },
-  mobileLink: {
-    color: '#cbd5e1',
-    fontSize: '1rem',
-    fontWeight: '500',
-    textDecoration: 'none',
-    padding: '0.75rem 1rem',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  mobileLinkActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    color: '#ffffff',
-  }
-};
