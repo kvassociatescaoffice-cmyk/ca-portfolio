@@ -24,7 +24,7 @@ export async function POST(request) {
     }
     
     // OTP is valid, create JWT token
-    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7h' });
     
     // Delete OTP so it cannot be reused
     await Otp.deleteOne({ _id: validOtp._id });
@@ -37,7 +37,7 @@ export async function POST(request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 7 * 60 * 60, // 7 hours
       path: '/',
     });
     

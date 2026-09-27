@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import BlogEditor from './BlogEditor';
 import FaqEditor from './FaqEditor';
 import NewsEditor from './NewsEditor';
-import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard } from 'lucide-react';
+import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard, Bell } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
@@ -23,6 +23,7 @@ export default function AdminDashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
   const [showHelp, setShowHelp] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [viewingLead, setViewingLead] = useState(null);
   
   // Gallery
@@ -211,6 +212,40 @@ export default function AdminDashboard() {
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} className="pulse-dot" />
             <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase' }}>Online</span>
           </div>
+          
+          <div style={{ position: 'relative' }}>
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: showNotifications ? 'rgba(255,255,255,0.2)' : 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', transition: 'all 0.3s', position: 'relative' }} className="hover-gold-border"
+              title="Notifications Wall"
+            >
+              <Bell size={18} />
+              {stats.recentActivity.length > 0 && (
+                <div style={{ position: 'absolute', top: '-4px', right: '-4px', background: 'var(--orange)', color: '#fff', fontSize: '0.65rem', fontWeight: 'bold', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: '2px solid var(--navy-900)' }}>
+                  {stats.recentActivity.length}
+                </div>
+              )}
+            </button>
+            
+            {showNotifications && (
+              <div style={{ position: 'absolute', top: '50px', right: '0', width: '320px', background: '#fff', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.2)', padding: '20px', border: '1px solid #e2e8f0', zIndex: 100 }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--navy-900)', marginBottom: '16px', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>Notifications Wall</h4>
+                {stats.recentActivity.length === 0 ? (
+                  <p style={{ fontSize: '0.85rem', color: 'var(--dim)', textAlign: 'center' }}>No new updates.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto' }}>
+                    {stats.recentActivity.map(lead => (
+                      <div key={lead._id} style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', borderLeft: '3px solid var(--orange)' }}>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--dim)', marginBottom: '4px' }}>New lead from {lead.name}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--dim)' }}>{new Date(lead.createdAt).toLocaleDateString()}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           <button 
             onClick={() => setShowHelp(!showHelp)}
             style={{ display: 'flex', alignItems: 'center', gap: '8px', background: showHelp ? 'rgba(255,255,255,0.2)' : 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 20px', borderRadius: '30px', cursor: 'pointer', fontWeight: '500', transition: 'all 0.3s' }} className="hover-gold-border"
