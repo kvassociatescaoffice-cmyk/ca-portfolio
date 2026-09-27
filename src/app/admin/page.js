@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BlogEditor from './BlogEditor';
+import { Mail, Edit3, HelpCircle, Newspaper, LogOut } from 'lucide-react';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -118,8 +119,8 @@ export default function AdminDashboard() {
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} />
             <span style={{ fontSize: '0.85rem', color: '#cbd5e1', fontWeight: '500', letterSpacing: '1px' }}>SYSTEM ONLINE</span>
           </div>
-          <button onClick={handleLogout} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 20px', borderRadius: '30px', cursor: 'pointer', fontWeight: '500', transition: 'all 0.3s' }} className="hover-gold-border">
-            Logout
+          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 20px', borderRadius: '30px', cursor: 'pointer', fontWeight: '500', transition: 'all 0.3s' }} className="hover-gold-border">
+            <LogOut size={16} /> Logout
           </button>
         </div>
       </header>
@@ -128,10 +129,18 @@ export default function AdminDashboard() {
         
         {/* Sidebar */}
         <aside style={{ width: '240px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <button onClick={() => { setActiveTab('leads'); setPage(1); }} style={getTabStyle(activeTab === 'leads')}>📬 Contact Leads</button>
-          <button onClick={() => { setActiveTab('blog'); setPage(1); }} style={getTabStyle(activeTab === 'blog')}>📝 Blog Manager</button>
-          <button onClick={() => setActiveTab('faq')} style={getTabStyle(activeTab === 'faq')}>❓ FAQ Manager</button>
-          <button onClick={() => setActiveTab('news')} style={getTabStyle(activeTab === 'news')}>📰 Firm News</button>
+          <button onClick={() => { setActiveTab('leads'); setPage(1); }} style={getTabStyle(activeTab === 'leads')}>
+            <Mail size={18} /> Contact Leads
+          </button>
+          <button onClick={() => { setActiveTab('blog'); setPage(1); }} style={getTabStyle(activeTab === 'blog')}>
+            <Edit3 size={18} /> Blog Manager
+          </button>
+          <button onClick={() => setActiveTab('faq')} style={getTabStyle(activeTab === 'faq')}>
+            <HelpCircle size={18} /> FAQ Manager
+          </button>
+          <button onClick={() => setActiveTab('news')} style={getTabStyle(activeTab === 'news')}>
+            <Newspaper size={18} /> Firm News
+          </button>
         </aside>
 
         {/* Main Content Area */}
@@ -302,6 +311,9 @@ export default function AdminDashboard() {
 }
 
 const getTabStyle = (isActive) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
   textAlign: 'left',
   padding: '16px 20px',
   background: isActive ? 'var(--navy-900)' : 'transparent',
