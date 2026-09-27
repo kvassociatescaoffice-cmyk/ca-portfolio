@@ -32,37 +32,16 @@ export default function AdminPage() {
     setPassword('');
   };
 
+  const router = import('next/navigation').then(mod => mod.useRouter);
+  
+  useEffect(() => {
+    if (!isAuthenticated) {
+      window.location.href = '/admin/login';
+    }
+  }, [isAuthenticated]);
+
   if (!isAuthenticated) {
-    return (
-      <div style={styles.loginContainer}>
-        <div style={styles.loginCard} className="glass animate-slide-up">
-          <h1 style={{ color: 'var(--primary)', marginBottom: '1.5rem', textAlign: 'center' }}>Admin Login</h1>
-          {error && <div style={{ color: '#ef4444', marginBottom: '1rem', textAlign: 'center', fontSize: '0.9rem' }}>{error}</div>}
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <input 
-              type="text" 
-              placeholder="Username" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={styles.input}
-              required
-            />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
-              required
-            />
-            <button type="submit" className="btn btn-primary" style={{ marginTop: '0.5rem' }}>Login</button>
-          </form>
-          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-            <Link href="/" style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>&larr; Back to Public Site</Link>
-          </div>
-        </div>
-      </div>
-    );
+    return <div style={{ minHeight: '100vh', background: 'var(--navy-900)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>Redirecting to secure login...</div>;
   }
 
   // Admin Dashboard View

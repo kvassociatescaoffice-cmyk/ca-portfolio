@@ -44,6 +44,7 @@ export default function AdminLogin() {
       });
       const data = await res.json();
       if (res.ok) {
+        localStorage.setItem('adminAuth', 'true');
         router.push('/admin');
       } else {
         setError(data.message || 'Invalid OTP');
