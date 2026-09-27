@@ -2,7 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BlogEditor from './BlogEditor';
-import { Mail, Edit3, HelpCircle, Newspaper, LogOut } from 'lucide-react';
+import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -23,6 +25,11 @@ export default function AdminDashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
   const [showHelp, setShowHelp] = useState(false);
+  const [viewingLead, setViewingLead] = useState(null);
+  
+  // Gallery
+  const [uploadingMedia, setUploadingMedia] = useState(false);
+  const [galleryLink, setGalleryLink] = useState('');
 
   // Editor States
   const [isEditingBlog, setIsEditingBlog] = useState(false);
@@ -92,8 +99,26 @@ export default function AdminDashboard() {
   if (!isMounted) return null;
   if (!isAuthenticated) return <div style={{ minHeight: '100vh', background: 'var(--navy-900)' }} />;
 
+  const handleGalleryUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingMedia(true);
+    const form = new FormData();
+    form.append('file', file);
+    try {
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.success) {
+        setGalleryLink(data.url);
+        toast.success("Media uploaded directly to Drive!");
+      } else toast.error("Upload failed.");
+    } catch (err) { toast.error("Network error"); }
+    setUploadingMedia(false);
+  };
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--cream)', fontFamily: 'var(--font-inter), sans-serif', color: 'var(--navy-900)' }}>
+      <ToastContainer position="bottom-right" />
       {/* Premium Header */}
       <header style={{ 
         background: 'var(--navy-900)', 
@@ -143,6 +168,9 @@ export default function AdminDashboard() {
           <button onClick={() => setActiveTab('news')} style={getTabStyle(activeTab === 'news')}>
             <Newspaper size={18} /> Firm News
           </button>
+          <button onClick={() => setActiveTab('gallery')} style={getTabStyle(activeTab === 'gallery')}>
+            <ImageIcon size={18} /> Media Gallery
+          </button>
         </aside>
 
         {/* Main Content Area */}
@@ -169,13 +197,35 @@ export default function AdminDashboard() {
             <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '12px', marginBottom: '24px', border: '1px solid var(--gold)', color: 'var(--navy-900)' }}>
               <h4 style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><HelpCircle size={18} /> Dashboard Guidelines</h4>
               <ul style={{ paddingLeft: '20px', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <li><strong>Leads:</strong> Filter by name/email. Manage client inquiries submitted from the homepage.</li>
+                <li><strong>Leads:</strong> Filter by name/email. Manage client inquiries submitted from the homepage. Click 'View' to read their full message.</li>
                 <li><strong>Rows per page:</strong> Use the dropdown at the bottom of any table to show 10, 25, or 50 items.</li>
                 <li><strong>Blogs:</strong> Upload cover images via Google Drive. Drafts are hidden from the public.</li>
+                <li><strong>Gallery:</strong> Direct upload to Google Drive without attaching it to a blog post.</li>
               </ul>
             </div>
           )}
           
+          {/* View Lead Full Data Modal */}
+          {viewingLead && (
+            <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ background: '#fff', padding: '32px', borderRadius: '16px', maxWidth: '500px', width: '90%', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
+                <button onClick={() => setViewingLead(null)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={20} /></button>
+                <h3 style={{ fontSize: '1.5rem', fontFamily: "var(--font-fraunces), serif", marginBottom: '8px', color: 'var(--navy-900)' }}>{viewingLead.name}</h3>
+                <p style={{ color: 'var(--dim)', marginBottom: '24px', fontSize: '0.9rem' }}>{new Date(viewingLead.createdAt).toLocaleString()}</p>
+                
+                <div style={{ display: 'grid', gap: '16px', fontSize: '0.95rem' }}>
+                  <div><strong>Email:</strong> <a href={`mailto:${viewingLead.email}`} style={{ color: 'var(--orange)' }}>{viewingLead.email}</a></div>
+                  <div><strong>Phone:</strong> {viewingLead.phone || 'N/A'}</div>
+                  <div><strong>Service:</strong> {viewingLead.service}</div>
+                  <div style={{ background: 'var(--cream)', padding: '16px', borderRadius: '8px', marginTop: '8px' }}>
+                    <strong>Message:</strong><br/>
+                    <p style={{ marginTop: '8px', whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{viewingLead.message || 'No message provided.'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'leads' && (
             <div className="animate-fade-in">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
@@ -204,6 +254,7 @@ export default function AdminDashboard() {
                         <th style={thStyle}>Name</th>
                         <th style={thStyle}>Contact Info</th>
                         <th style={thStyle}>Service Required</th>
+                        <th style={thStyle}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -216,6 +267,11 @@ export default function AdminDashboard() {
                             {lead.phone && <div style={{ fontSize: '0.85rem', color: 'var(--dim)', marginTop: '4px' }}>{lead.phone}</div>}
                           </td>
                           <td style={tdStyle}><span style={{ background: 'var(--cream)', border: '1px solid #e2e8f0', padding: '6px 12px', borderRadius: '30px', fontSize: '0.85rem', fontWeight: '500' }}>{lead.service}</span></td>
+                          <td style={tdStyle}>
+                            <button onClick={() => setViewingLead(lead)} style={{ background: 'transparent', border: '1px solid var(--gold)', color: 'var(--navy-900)', padding: '6px 16px', borderRadius: '30px', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <Eye size={14} /> View
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -345,6 +401,28 @@ export default function AdminDashboard() {
                 <button style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '12px 24px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold' }}>+ Post Update</button>
               </div>
               <p style={{ color: 'var(--dim)' }}>News feed module pending UI completion.</p>
+            </div>
+          )}
+
+          {activeTab === 'gallery' && (
+            <div className="animate-fade-in">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                <h2 style={{ fontSize: '2rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)' }}>Media Gallery</h2>
+              </div>
+              <div style={{ background: 'var(--cream)', padding: '40px', borderRadius: '16px', border: '1px dashed var(--gold)', textAlign: 'center' }}>
+                <h3 style={{ marginBottom: '16px', color: 'var(--navy-900)' }}>Upload to Google Drive directly</h3>
+                <input type="file" onChange={handleGalleryUpload} disabled={uploadingMedia} style={{ padding: '8px', background: '#fff', borderRadius: '8px' }} />
+                {uploadingMedia && <p style={{ marginTop: '16px', color: 'var(--orange)' }}>Uploading to Drive...</p>}
+                
+                {galleryLink && (
+                  <div style={{ marginTop: '32px', background: '#fff', padding: '24px', borderRadius: '8px', border: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <h4 style={{ marginBottom: '8px', color: '#10b981' }}>Upload Successful!</h4>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--dim)', marginBottom: '8px' }}>Direct Link:</p>
+                    <input type="text" readOnly value={galleryLink} style={{ width: '100%', padding: '12px', background: 'var(--cream)', border: '1px solid #e2e8f0', borderRadius: '8px' }} />
+                    <a href={galleryLink} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '12px', color: 'var(--navy-900)', fontWeight: 'bold' }}>Test Link &rarr;</a>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

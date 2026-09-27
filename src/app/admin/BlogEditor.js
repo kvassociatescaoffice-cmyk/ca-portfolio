@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function BlogEditor({ blog, onSave, onCancel }) {
   const [formData, setFormData] = useState(blog || {
@@ -33,11 +34,12 @@ export default function BlogEditor({ blog, onSave, onCancel }) {
       const data = await res.json();
       if (data.success) {
         setFormData({ ...formData, coverImage: data.url });
+        toast.success("Image uploaded to Google Drive!");
       } else {
-        alert('Upload failed: ' + data.message);
+        toast.error('Upload failed: ' + data.message);
       }
     } catch (err) {
-      alert('Upload error');
+      toast.error('Network error during upload');
     }
     setIsUploading(false);
   };
@@ -64,12 +66,13 @@ export default function BlogEditor({ blog, onSave, onCancel }) {
       const data = await res.json();
       
       if (data.success) {
+        toast.success(blog ? "Blog updated successfully!" : "Blog created successfully!");
         onSave();
       } else {
-        alert('Save failed: ' + data.message);
+        toast.error('Save failed: ' + data.message);
       }
     } catch (err) {
-      alert('Save error');
+      toast.error('Network error during save');
     }
     setIsSaving(false);
   };
