@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import BlogEditor from './BlogEditor';
 import FaqEditor from './FaqEditor';
 import NewsEditor from './NewsEditor';
-import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X } from 'lucide-react';
+import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('leads');
+  const [activeTab, setActiveTab] = useState('overview');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -43,6 +43,7 @@ export default function AdminDashboard() {
   const [blogs, setBlogs] = useState([]);
   const [faqs, setFaqs] = useState([]);
   const [news, setNews] = useState([]);
+  const [stats, setStats] = useState({ counts: { leads: 0, blogs: 0, faqs: 0, news: 0 }, recentActivity: [] });
 
   useEffect(() => {
     setIsMounted(true);
@@ -56,12 +57,26 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (activeTab === 'leads') fetchLeads();
+      if (activeTab === 'overview') fetchStats();
+      else if (activeTab === 'leads') fetchLeads();
       else if (activeTab === 'blog') fetchBlogs();
       else if (activeTab === 'faq') fetchFaqs();
       else if (activeTab === 'news') fetchNews();
     }
   }, [isAuthenticated, activeTab, page, limit, search]);
+
+  const fetchStats = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/stats`);
+      if (res.status === 401) return handleLogout();
+      const data = await res.json();
+      if (data.success) {
+        setStats(data.data);
+      }
+    } catch (err) {}
+    setLoading(false);
+  };
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -206,6 +221,9 @@ export default function AdminDashboard() {
           top: '100px'
         }}>
           <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--dim)', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '12px', paddingLeft: '12px' }}>Menu</div>
+          <button onClick={() => { setActiveTab('overview'); setPage(1); }} style={getTabStyle(activeTab === 'overview')}>
+            <LayoutDashboard size={18} /> Overview Dashboard
+          </button>
           <button onClick={() => { setActiveTab('leads'); setPage(1); }} style={getTabStyle(activeTab === 'leads')}>
             <Mail size={18} /> Contact Leads
           </button>
@@ -240,11 +258,65 @@ export default function AdminDashboard() {
             <div className="animate-fade-in" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5))', backdropFilter: 'blur(10px)', padding: '24px', borderRadius: '16px', marginBottom: '32px', border: '1px solid var(--gold)', color: 'var(--navy-900)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
               <h4 style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.1rem' }}><HelpCircle size={20} color="var(--orange)" /> Dashboard Guidelines</h4>
               <ul style={{ paddingLeft: '24px', fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--navy-800)' }}>
+                <li><strong>Overview:</strong> View high-level metrics and recent activity at a glance.</li>
                 <li><strong>Leads:</strong> Filter by name/email. Manage client inquiries submitted from the homepage. Click 'View' to read their full message.</li>
                 <li><strong>Rows per page:</strong> Use the dropdown at the bottom of any table to show 10, 25, or 50 items.</li>
                 <li><strong>Blogs:</strong> Upload cover images via Google Drive. Drafts are hidden from the public.</li>
                 <li><strong>Gallery:</strong> Direct upload to Google Drive without attaching it to a blog post.</li>
               </ul>
+            </div>
+          )}
+          
+          {activeTab === 'overview' && (
+            <div className="animate-fade-in">
+              <div style={{ marginBottom: '40px' }}>
+                <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>Dashboard Overview</h2>
+                <p style={{ color: 'var(--dim)', marginTop: '8px' }}>At-a-glance metrics and recent activity for your firm.</p>
+              </div>
+
+              {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><div className="spinner" /></div>
+              ) : (
+                <>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '40px' }}>
+                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Total Leads</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.leads}</div>
+                    </div>
+                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Published Articles</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.blogs}</div>
+                    </div>
+                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Firm Updates</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.news}</div>
+                    </div>
+                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Live FAQs</div>
+                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.faqs}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', padding: '32px' }}>
+                    <h3 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '24px', fontFamily: "var(--font-fraunces), serif" }}>Recent Inquiries</h3>
+                    {stats.recentActivity.length === 0 ? (
+                      <p style={{ color: 'var(--dim)' }}>No recent activity to display.</p>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {stats.recentActivity.map(lead => (
+                          <div key={lead._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                            <div>
+                              <div style={{ fontWeight: '600', color: 'var(--navy-900)', fontSize: '1.05rem', marginBottom: '4px' }}>{lead.name}</div>
+                              <div style={{ color: 'var(--dim)', fontSize: '0.85rem' }}>{lead.email} &bull; {new Date(lead.createdAt).toLocaleDateString()}</div>
+                            </div>
+                            <button onClick={() => { setViewingLead(lead); setActiveTab('leads'); }} style={{ background: '#fff', border: '1px solid #cbd5e1', color: 'var(--navy-900)', padding: '6px 16px', borderRadius: '30px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }} className="hover-shadow">View</button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           )}
           
