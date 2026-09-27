@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLogin() {
@@ -8,7 +8,18 @@ export default function AdminLogin() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [timeLeft, setTimeLeft] = useState(300);
   const router = useRouter();
+
+  useEffect(() => {
+    let timer;
+    if (step === 2 && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [step, timeLeft]);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -23,6 +34,7 @@ export default function AdminLogin() {
       const data = await res.json();
       if (res.ok) {
         setStep(2);
+        setTimeLeft(300);
       } else {
         setError(data.message || 'Failed to send OTP');
       }
@@ -113,9 +125,20 @@ export default function AdminLogin() {
             <button disabled={loading} type="submit" style={{ background: 'var(--navy-800)', color: '#fff', padding: '12px', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
               {loading ? 'Verifying...' : 'Login'}
             </button>
-            <button type="button" onClick={() => setStep(1)} style={{ background: 'transparent', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontSize: '0.9rem' }}>
-              Back
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
+              <span style={{ fontSize: '0.85rem', color: timeLeft > 0 ? 'var(--dim)' : 'red' }}>
+                {timeLeft > 0 ? `Code expires in ${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}` : 'Code expired'}
+              </span>
+              {timeLeft === 0 ? (
+                <button type="button" onClick={handleSendOtp} style={{ background: 'transparent', border: 'none', color: 'var(--orange)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '600' }}>
+                  Resend OTP
+                </button>
+              ) : (
+                <button type="button" onClick={() => setStep(1)} style={{ background: 'transparent', border: 'none', color: 'var(--dim)', cursor: 'pointer', fontSize: '0.9rem' }}>
+                  Change Email
+                </button>
+              )}
+            </div>
           </form>
         )}
       </div>
