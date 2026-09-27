@@ -4,6 +4,7 @@ import Contact from '@/models/Contact';
 import Blog from '@/models/Blog';
 import Faq from '@/models/Faq';
 import News from '@/models/News';
+import Notification from '@/models/Notification';
 import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
 
 export const dynamic = 'force-dynamic';
@@ -22,6 +23,8 @@ export async function GET(request) {
       News.countDocuments()
     ]);
 
+    const unreadCount = await Notification.countDocuments({ isRead: false });
+
     // Get 5 most recent leads for the activity feed
     const recentLeads = await Contact.find().sort({ createdAt: -1 }).limit(5).lean();
     
@@ -29,7 +32,8 @@ export async function GET(request) {
       success: true,
       data: {
         counts: { leads, blogs, faqs, news },
-        recentActivity: recentLeads
+        recentActivity: recentLeads,
+        unreadCount
       }
     });
   } catch (error) {

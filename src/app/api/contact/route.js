@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Contact from '@/models/Contact';
 
+import Notification from '@/models/Notification';
+
 export async function POST(request) {
   try {
     await dbConnect();
@@ -20,6 +22,13 @@ export async function POST(request) {
       subject: body.subject || 'General Inquiry',
       message: body.message || '',
       status: 'new'
+    });
+
+    // Create Notification
+    await Notification.create({
+      title: 'New Lead Received',
+      message: `${body.name} submitted a new inquiry.`,
+      type: 'lead'
     });
 
     return NextResponse.json({ success: true, data: newContact }, { status: 201 });

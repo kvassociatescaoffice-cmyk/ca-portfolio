@@ -46,7 +46,8 @@ export default function AdminDashboard() {
   const [faqs, setFaqs] = useState([]);
   const [news, setNews] = useState([]);
   const [galleryItems, setGalleryItems] = useState([]);
-  const [stats, setStats] = useState({ counts: { leads: 0, blogs: 0, faqs: 0, news: 0 }, recentActivity: [] });
+  const [notifications, setNotifications] = useState([]);
+  const [stats, setStats] = useState({ counts: { leads: 0, blogs: 0, faqs: 0, news: 0 }, recentActivity: [], unreadCount: 0 });
 
   useEffect(() => {
     setIsMounted(true);
@@ -72,8 +73,48 @@ export default function AdminDashboard() {
       else if (activeTab === 'faq') fetchFaqs();
       else if (activeTab === 'news') fetchNews();
       else if (activeTab === 'gallery') fetchGallery();
+      else if (activeTab === 'notifications') fetchNotifications();
     }
   }, [isAuthenticated, activeTab, page, limit, search]);
+
+  const fetchNotifications = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/notifications?page=${page}&limit=${limit}`, { cache: 'no-store' });
+      if (res.status === 401) return handleLogout();
+      const data = await res.json();
+      if (data.success) {
+        setNotifications(data.data);
+        setTotalPages(data.pagination.pages);
+      }
+    } catch (err) {}
+    setLoading(false);
+  };
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      await fetch('/api/admin/notifications', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      fetchNotifications();
+      fetchStats();
+    } catch (err) {}
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await fetch('/api/admin/notifications', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'markAll' })
+      });
+      fetchNotifications();
+      fetchStats();
+      toast.success('All notifications marked as read');
+    } catch (err) {}
+  };
 
   const fetchStats = async () => {
     setLoading(true);
@@ -215,35 +256,17 @@ export default function AdminDashboard() {
           
           <div style={{ position: 'relative' }}>
             <button 
-              onClick={() => setShowNotifications(!showNotifications)}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: showNotifications ? 'rgba(255,255,255,0.2)' : 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', transition: 'all 0.3s', position: 'relative' }} className="hover-gold-border"
-              title="Notifications Wall"
+              onClick={() => { setActiveTab('notifications'); setPage(1); }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', width: '40px', height: '40px', borderRadius: '50%', cursor: 'pointer', transition: 'all 0.3s', position: 'relative' }} className="hover-gold-border"
+              title="Notifications"
             >
               <Bell size={18} />
-              {stats.recentActivity.length > 0 && (
+              {stats.unreadCount > 0 && (
                 <div style={{ position: 'absolute', top: '-4px', right: '-4px', background: 'var(--orange)', color: '#fff', fontSize: '0.65rem', fontWeight: 'bold', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: '2px solid var(--navy-900)' }}>
-                  {stats.recentActivity.length}
+                  {stats.unreadCount}
                 </div>
               )}
             </button>
-            
-            {showNotifications && (
-              <div style={{ position: 'absolute', top: '50px', right: '0', width: '320px', background: '#fff', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.2)', padding: '20px', border: '1px solid #e2e8f0', zIndex: 100 }}>
-                <h4 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--navy-900)', marginBottom: '16px', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>Notifications Wall</h4>
-                {stats.recentActivity.length === 0 ? (
-                  <p style={{ fontSize: '0.85rem', color: 'var(--dim)', textAlign: 'center' }}>No new updates.</p>
-                ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto' }}>
-                    {stats.recentActivity.map(lead => (
-                      <div key={lead._id} style={{ padding: '12px', background: '#f8fafc', borderRadius: '8px', borderLeft: '3px solid var(--orange)' }}>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--dim)', marginBottom: '4px' }}>New lead from {lead.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--dim)' }}>{new Date(lead.createdAt).toLocaleDateString()}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
           <button 
@@ -291,11 +314,14 @@ export default function AdminDashboard() {
           <button onClick={() => setActiveTab('faq')} style={getTabStyle(activeTab === 'faq')}>
             <HelpCircle size={18} /> FAQ Manager
           </button>
-          <button onClick={() => setActiveTab('news')} style={getTabStyle(activeTab === 'news')}>
+          <button onClick={() => { setActiveTab('news'); setPage(1); setSearch(''); }} style={getTabStyle(activeTab === 'news')}>
             <Newspaper size={18} /> Firm News
           </button>
-          <button onClick={() => setActiveTab('gallery')} style={getTabStyle(activeTab === 'gallery')}>
+          <button onClick={() => { setActiveTab('gallery'); setPage(1); setSearch(''); }} style={getTabStyle(activeTab === 'gallery')}>
             <ImageIcon size={18} /> Media Gallery
+          </button>
+          <button onClick={() => { setActiveTab('notifications'); setPage(1); setSearch(''); }} style={getTabStyle(activeTab === 'notifications')}>
+            <Bell size={18} /> Notifications
           </button>
         </aside>
 
@@ -908,6 +934,58 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
+            </div>
+          )}
+
+          {activeTab === 'notifications' && (
+            <div className="animate-fade-in">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                <div>
+                  <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>Notifications</h2>
+                  <p style={{ color: 'var(--dim)', marginTop: '8px' }}>System alerts and lead activity.</p>
+                </div>
+                <button onClick={handleMarkAllAsRead} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--navy-900)', color: '#fff', padding: '10px 20px', borderRadius: '30px', fontWeight: '600', cursor: 'pointer', border: 'none', boxShadow: '0 4px 15px rgba(15,23,42,0.1)' }}>
+                  Mark All as Read
+                </button>
+              </div>
+
+              {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><div className="spinner" /></div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {notifications.length === 0 ? (
+                    <div style={{ padding: '60px', textAlign: 'center', background: '#f8fafc', borderRadius: '16px', border: '1px dashed #cbd5e1' }}>
+                      <p style={{ color: 'var(--dim)', fontSize: '1.1rem' }}>No notifications found.</p>
+                    </div>
+                  ) : (
+                    notifications.map(notif => (
+                      <div key={notif._id} style={{ padding: '20px', background: notif.isRead ? '#fff' : '#f0fdf4', borderRadius: '16px', border: `1px solid ${notif.isRead ? '#e2e8f0' : '#10b981'}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.02)' }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                            {!notif.isRead && <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }} />}
+                            <h4 style={{ fontSize: '1.1rem', color: 'var(--navy-900)', margin: 0 }}>{notif.title}</h4>
+                          </div>
+                          <p style={{ color: 'var(--navy-800)', margin: '0 0 8px 0', fontSize: '0.95rem' }}>{notif.message}</p>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--dim)' }}>{new Date(notif.createdAt).toLocaleString()}</span>
+                        </div>
+                        {!notif.isRead && (
+                          <button onClick={() => handleMarkAsRead(notif._id)} style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--dim)', borderRadius: '20px', color: 'var(--navy-900)', fontSize: '0.85rem', cursor: 'pointer' }} className="hover-gold-border">
+                            Mark Read
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  )}
+                  
+                  {totalPages > 1 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', padding: '16px', background: '#f8fafc', borderRadius: '12px' }}>
+                      <button disabled={page === 1} onClick={() => setPage(p => p - 1)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #cbd5e1', background: page === 1 ? '#e2e8f0' : '#fff', cursor: page === 1 ? 'not-allowed' : 'pointer' }}>Previous</button>
+                      <span style={{ fontSize: '0.9rem', color: 'var(--navy-800)' }}>Page {page} of {totalPages}</span>
+                      <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid #cbd5e1', background: page === totalPages ? '#e2e8f0' : '#fff', cursor: page === totalPages ? 'not-allowed' : 'pointer' }}>Next</button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
