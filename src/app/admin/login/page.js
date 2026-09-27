@@ -83,15 +83,32 @@ export default function AdminLogin() {
           <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--dim)', marginBottom: '6px' }}>Enter 6-digit OTP</label>
-              <input 
-                type="text" 
-                value={otp} 
-                onChange={e => setOtp(e.target.value)} 
-                required
-                maxLength={6}
-                style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--line)', letterSpacing: '4px', textAlign: 'center', fontSize: '1.2rem' }}
-                placeholder="••••••"
-              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input 
+                  type="text" 
+                  value={otp} 
+                  onChange={e => setOtp(e.target.value)} 
+                  required
+                  maxLength={6}
+                  style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid var(--line)', letterSpacing: '4px', textAlign: 'center', fontSize: '1.2rem' }}
+                  placeholder="••••••"
+                />
+                <button 
+                  type="button" 
+                  onClick={async () => {
+                    try {
+                      const text = await navigator.clipboard.readText();
+                      setOtp(text.trim().substring(0, 6));
+                    } catch (err) {
+                      console.error('Failed to read clipboard', err);
+                    }
+                  }}
+                  style={{ padding: '0 16px', borderRadius: '8px', border: '1px solid var(--line)', background: '#f8fafc', cursor: 'pointer', fontWeight: '500', color: 'var(--navy-900)' }}
+                  title="Paste OTP"
+                >
+                  Paste
+                </button>
+              </div>
             </div>
             <button disabled={loading} type="submit" style={{ background: 'var(--navy-800)', color: '#fff', padding: '12px', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>
               {loading ? 'Verifying...' : 'Login'}
