@@ -1,10 +1,28 @@
 'use client';
 import Link from 'next/link';
-import { ArrowUpRight, TrendingUp, TrendingDown, Award } from 'lucide-react';
-import { useEffect } from 'react';
+import { ArrowUpRight, TrendingUp, TrendingDown, Award, Calendar, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [faqs, setFaqs] = useState([]);
+  const [news, setNews] = useState([]);
+
   useEffect(() => {
+    // Fetch dynamic content
+    fetch('/api/admin/faqs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setFaqs(data.data);
+      })
+      .catch(() => {});
+
+    fetch('/api/admin/news')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setNews(data.data);
+      })
+      .catch(() => {});
+
     // Reveal animation
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -193,35 +211,51 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="reveal" style={{ background: 'var(--cream-bg)' }}>
-        <div className="section-head">
-          <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Frequently Asked Questions</h2>
-          <p>Everything you need to know about our services and process.</p>
-        </div>
-        <div className="faq-grid">
-          <div className="faq-item" onClick={toggleFaq}>
-            <div className="faq-q">
-              What documents are required for GST Registration?
-              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-            </div>
-            <div className="faq-a">For GST registration, we generally require your PAN card, Aadhaar card, proof of business registration or incorporation certificate, identity and address proof of promoters/directors, bank account statement or cancelled cheque, and proof of principal place of business.</div>
+      {news.length > 0 && (
+        <section className="reveal" style={{ padding: '4vw 6vw', background: '#fff' }}>
+          <div className="section-head" style={{ marginBottom: '40px' }}>
+            <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Firm News & Updates</h2>
+            <p>Latest announcements, regulatory alerts, and insights from our experts.</p>
           </div>
-          <div className="faq-item" onClick={toggleFaq}>
-            <div className="faq-q">
-              Do you offer remote or virtual CFO services?
-              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-            </div>
-            <div className="faq-a">Yes, our Virtual CFO services provide you with high-level financial strategy, systems analysis, and operational optimization without the cost of a full-time executive. This service is fully remote and scaled to your needs.</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
+            {news.slice(0, 3).map((item) => (
+              <div key={item._id} style={{ border: '1px solid #f1f5f9', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', transition: 'transform 0.3s' }} className="hover-scale">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--dim)', fontSize: '0.85rem', marginBottom: '12px' }}>
+                  <Calendar size={14} />
+                  {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </div>
+                <h3 style={{ fontSize: '1.25rem', color: 'var(--navy-900)', marginBottom: '12px', lineHeight: 1.4 }}>{item.title}</h3>
+                <div style={{ fontSize: '0.95rem', color: 'var(--dim)', lineHeight: 1.6, marginBottom: '20px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: item.content }} />
+                {item.sourceUrl && (
+                  <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--orange)', fontWeight: 'bold', fontSize: '0.9rem', textDecoration: 'none' }}>
+                    Read Full Alert <ChevronRight size={16} />
+                  </a>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="faq-item" onClick={toggleFaq}>
-            <div className="faq-q">
-              How often will we communicate during an audit?
-              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-            </div>
-            <div className="faq-a">We maintain transparent, regular communication. During active audits, you will receive weekly status updates and immediate alerts for any urgent requirements or findings. Once finalized, we hold a comprehensive review meeting.</div>
+        </section>
+      )}
+
+      {faqs.length > 0 && (
+        <section className="reveal" style={{ background: 'var(--cream-bg)' }}>
+          <div className="section-head">
+            <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Frequently Asked Questions</h2>
+            <p>Everything you need to know about our services and process.</p>
           </div>
-        </div>
-      </section>
+          <div className="faq-grid">
+            {faqs.map(faq => (
+              <div key={faq._id} className="faq-item" onClick={toggleFaq}>
+                <div className="faq-q">
+                  {faq.question}
+                  <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+                </div>
+                <div className="faq-a" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="reveal" style={{padding: '4vw 6vw'}}>
         <div style={{
