@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import BlogEditor from './BlogEditor';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -16,6 +17,11 @@ export default function AdminDashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
 
+  // Blog State
+  const [blogs, setBlogs] = useState([]);
+  const [isEditingBlog, setIsEditingBlog] = useState(false);
+  const [currentBlog, setCurrentBlog] = useState(null);
+
   useEffect(() => {
     setIsMounted(true);
     const auth = localStorage.getItem('adminAuth') === 'true';
@@ -29,8 +35,24 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isAuthenticated && activeTab === 'leads') {
       fetchLeads();
+    } else if (isAuthenticated && activeTab === 'blog') {
+      fetchBlogs();
     }
   }, [isAuthenticated, activeTab, page, search]);
+
+  const fetchBlogs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/blogs?page=${page}&limit=10`);
+      const data = await res.json();
+      if (data.success) {
+        setBlogs(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -151,11 +173,60 @@ export default function AdminDashboard() {
 
           {activeTab === 'blog' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '1.5rem', color: 'var(--navy-900)' }}>Blog Content Manager</h2>
-                <button style={{ background: 'var(--orange)', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>+ New Post</button>
-              </div>
-              <p style={{ color: 'var(--dim)' }}>This module is currently being connected to the MongoDB backend. Check back soon!</p>
+              {isEditingBlog ? (
+                <BlogEditor 
+                  blog={currentBlog} 
+                  onCancel={() => { setIsEditingBlog(false); setCurrentBlog(null); }} 
+                  onSave={() => { setIsEditingBlog(false); setCurrentBlog(null); fetchBlogs(); }} 
+                />
+              ) : (
+                <>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--navy-900)' }}>Blog Content Manager</h2>
+                    <button onClick={() => setIsEditingBlog(true)} style={{ background: 'var(--orange)', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>+ New Post</button>
+                  </div>
+                  
+                  {loading ? (
+                    <p style={{ color: 'var(--dim)' }}>Loading blogs...</p>
+                  ) : blogs.length === 0 ? (
+                    <div style={{ padding: '40px', textAlign: 'center', background: '#f8fafc', borderRadius: '8px' }}>
+                      <p style={{ color: 'var(--dim)' }}>No blog posts found.</p>
+                    </div>
+                  ) : (
+                    <div style={{ overflowX: 'auto' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                        <thead>
+                          <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
+                            <th style={thStyle}>Date</th>
+                            <th style={thStyle}>Title</th>
+                            <th style={thStyle}>Status</th>
+                            <th style={thStyle}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {blogs.map(blog => (
+                            <tr key={blog._id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                              <td style={tdStyle}>{new Date(blog.createdAt).toLocaleDateString()}</td>
+                              <td style={tdStyle}>
+                                <strong>{blog.title}</strong>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--dim)' }}>/{blog.slug}</div>
+                              </td>
+                              <td style={tdStyle}>
+                                <span style={{ background: blog.isPublished ? '#dcfce7' : '#f1f5f9', color: blog.isPublished ? '#166534' : '#64748b', padding: '4px 8px', borderRadius: '4px', fontSize: '0.85rem' }}>
+                                  {blog.isPublished ? 'Published' : 'Draft'}
+                                </span>
+                              </td>
+                              <td style={tdStyle}>
+                                <button onClick={() => { setCurrentBlog(blog); setIsEditingBlog(true); }} style={{ background: 'transparent', border: '1px solid #cbd5e1', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Edit</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
 
