@@ -129,11 +129,42 @@ export default function Navbar() {
               <path d="M6 9l6 6 6-6" />
             </svg>
           </Link>
-          <div className="megamenu" style={{ minWidth: '250px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', padding: '16px', gap: '8px' }}>
-              <Link href="/news" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">Firm News & Updates</Link>
-              <Link href="/blog" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">Technical Blogs</Link>
-              <Link href="/faq" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">FAQs</Link>
+          <div className="megamenu">
+            <div className="mega-grid">
+              <div className="mega-col">
+                <Link href="/news"><h4>Firm News & Updates &rarr;</h4></Link>
+                <ul>
+                  <li>Regulatory Alerts</li>
+                  <li>Firm Announcements</li>
+                  <li>Market Insights</li>
+                </ul>
+              </div>
+              <div className="mega-col">
+                <Link href="/blog"><h4>Technical Blogs &rarr;</h4></Link>
+                <ul>
+                  <li>Taxation Strategies</li>
+                  <li>Corporate Structuring</li>
+                  <li>Compliance Guides</li>
+                </ul>
+              </div>
+              <div className="mega-col">
+                <Link href="/faq"><h4>FAQs &rarr;</h4></Link>
+                <ul>
+                  <li>Audit Procedures</li>
+                  <li>GST Queries</li>
+                  <li>General Information</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="mega-banner">
+              <div className="mega-banner-text">
+                <strong>Stay Updated with Our Insights</strong>
+                <span>Explore our comprehensive library of resources, articles, and compliance alerts.</span>
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <Link href="/blog" className="btn solid" style={{ padding: '10px 20px' }}>Read Blogs</Link>
+              </div>
             </div>
           </div>
         </div>
