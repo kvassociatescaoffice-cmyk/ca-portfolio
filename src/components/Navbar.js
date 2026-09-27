@@ -7,7 +7,7 @@ export default function Navbar() {
   return (
     <nav id="nav">
       <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '900', fontSize: '1.6rem', color: '#fff', letterSpacing: '0.5px' }}>
-        <img src="/images/logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
+        <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
         KVA
       </Link>
       <div className="navlinks">
