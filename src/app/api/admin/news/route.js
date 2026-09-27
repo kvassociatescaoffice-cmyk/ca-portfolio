@@ -10,12 +10,20 @@ export async function GET(request) {
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 10;
   const search = searchParams.get('search') || '';
+  const year = searchParams.get('year');
+  const month = searchParams.get('month');
 
   const admin = verifyAdminToken(request);
   let query = admin ? {} : { isPublished: true };
 
   if (search) {
     query.title = { $regex: search, $options: 'i' };
+  }
+  
+  if (year) {
+    const startDate = new Date(parseInt(year), month ? parseInt(month) - 1 : 0, 1);
+    const endDate = new Date(parseInt(year), month ? parseInt(month) : 12, 1);
+    query.createdAt = { $gte: startDate, $lt: endDate };
   }
 
   try {
