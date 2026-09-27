@@ -118,13 +118,25 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <Link className={pathname === '/knowledge' ? 'active' : ''} href="/knowledge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <path d="M6 3h9l3 3v15H6z" />
-            <path d="M9 11h6M9 15h6" />
-          </svg>
-          Resources
-        </Link>
+        <div className="dropdown">
+          <Link className={pathname.startsWith('/knowledge') || pathname.startsWith('/blog') || pathname.startsWith('/news') || pathname.startsWith('/faq') ? 'active' : ''} href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+              <path d="M6 3h9l3 3v15H6z" />
+              <path d="M9 11h6M9 15h6" />
+            </svg>
+            Resources
+            <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </Link>
+          <div className="megamenu" style={{ minWidth: '250px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', padding: '16px', gap: '8px' }}>
+              <Link href="/news" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">Firm News & Updates</Link>
+              <Link href="/blog" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">Technical Blogs</Link>
+              <Link href="/faq" style={{ display: 'block', padding: '12px', background: '#f8fafc', borderRadius: '8px', color: 'var(--navy-900)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.2s' }} className="hover-bg-gray">FAQs</Link>
+            </div>
+          </div>
+        </div>
         <Link className={pathname === '/contact' ? 'active' : ''} href="/contact">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
             <rect x="3" y="5" width="18" height="14" rx="1" />

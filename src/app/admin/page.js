@@ -290,26 +290,24 @@ export default function AdminDashboard() {
           )}
           
           {/* Global KPI Metrics */}
-          {stats.counts.leads > 0 || stats.counts.blogs > 0 || stats.counts.faqs > 0 || stats.counts.news > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Total Leads</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.leads}</div>
-              </div>
-              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Published Articles</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.blogs}</div>
-              </div>
-              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Firm Updates</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.news}</div>
-              </div>
-              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
-                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Live FAQs</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.faqs}</div>
-              </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+            <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+              <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Total Leads</div>
+              <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.leads}</div>
             </div>
-          ) : null}
+            <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+              <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Published Articles</div>
+              <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.blogs}</div>
+            </div>
+            <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+              <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Firm Updates</div>
+              <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.news}</div>
+            </div>
+            <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+              <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Live FAQs</div>
+              <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.faqs}</div>
+            </div>
+          </div>
 
           {activeTab === 'overview' && (
             <div className="animate-fade-in">
