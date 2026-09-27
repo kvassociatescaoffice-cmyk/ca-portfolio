@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BarChart3, FileCheck, Building2, Newspaper, User, CheckCircle, Star, ArrowUpRight, TrendingUp, TrendingDown, Award } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -26,11 +27,11 @@ export default function Home() {
         <div className="ticker-inner">
           {[...Array(2)].map((_, i) => (
             <div key={i} style={{ display: 'flex' }}>
-              <div className="ticker-item"><span style={{ color: 'var(--secondary)' }}>▲</span> BSE SENSEX 73,158.24 (+1.2%)</div>
-              <div className="ticker-item"><span style={{ color: '#ef4444' }}>▼</span> NIFTY 50 22,212.70 (-0.4%)</div>
-              <div className="ticker-item"><span style={{ color: 'var(--secondary)' }}>▲</span> GOLD (10g) ₹62,450</div>
-              <div className="ticker-item"><span style={{ color: 'var(--accent)' }}>★</span> Awarded Top Advisory 2024</div>
-              <div className="ticker-item"><span style={{ color: 'var(--secondary)' }}>▲</span> USD/INR 82.90</div>
+              <div className="ticker-item"><span style={{ color: 'var(--secondary)', display: 'inline-flex', alignItems: 'center', marginRight: '4px' }}><TrendingUp size={16} /></span> BSE SENSEX 73,158.24 (+1.2%)</div>
+              <div className="ticker-item"><span style={{ color: '#ef4444', display: 'inline-flex', alignItems: 'center', marginRight: '4px' }}><TrendingDown size={16} /></span> NIFTY 50 22,212.70 (-0.4%)</div>
+              <div className="ticker-item"><span style={{ color: 'var(--secondary)', display: 'inline-flex', alignItems: 'center', marginRight: '4px' }}><TrendingUp size={16} /></span> GOLD (10g) ₹62,450</div>
+              <div className="ticker-item"><span style={{ color: 'var(--accent)', display: 'inline-flex', alignItems: 'center', marginRight: '4px' }}><Award size={16} /></span> Awarded Top Advisory 2024</div>
+              <div className="ticker-item"><span style={{ color: 'var(--secondary)', display: 'inline-flex', alignItems: 'center', marginRight: '4px' }}><TrendingUp size={16} /></span> USD/INR 82.90</div>
             </div>
           ))}
         </div>
@@ -49,7 +50,7 @@ export default function Home() {
           <div className="bento-card bento-tall hover-glow">
             <div style={styles.cardPattern}></div>
             <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ fontSize: '3rem', marginBottom: 'auto' }}>📊</div>
+              <div style={{ marginBottom: 'auto', color: 'var(--primary)' }}><BarChart3 size={48} /></div>
               <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: 'var(--primary)' }}>Audit & Assurance</h3>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Comprehensive statutory, internal, and tax audits that go beyond mere compliance to offer strategic insights.</p>
               <Link href="/services#audit" style={{ color: 'var(--secondary)', fontWeight: '600' }}>Explore Audit &rarr;</Link>
@@ -68,7 +69,7 @@ export default function Home() {
           {/* Standard Cards */}
           <div className="bento-card hover-glow">
             <div style={{ position: 'relative', zIndex: 2 }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📑</div>
+              <div style={{ marginBottom: '1rem', color: 'var(--primary)' }}><FileCheck size={40} /></div>
               <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>GST Compliance</h3>
               <Link href="/services#gst" style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More &rarr;</Link>
             </div>
@@ -76,7 +77,7 @@ export default function Home() {
 
           <div className="bento-card hover-glow">
             <div style={{ position: 'relative', zIndex: 2 }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🏢</div>
+              <div style={{ marginBottom: '1rem', color: 'var(--primary)' }}><Building2 size={40} /></div>
               <h3 style={{ fontSize: '1.4rem', marginBottom: '0.5rem' }}>Corporate Law</h3>
               <Link href="/services#corporate" style={{ color: 'var(--primary)', fontWeight: '600' }}>Learn More &rarr;</Link>
             </div>
@@ -120,14 +121,14 @@ export default function Home() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
             <div>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: '#fff' }}>Why Choose VJA Clone?</h2>
+              <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: '#fff' }}>Why Choose KUMAR VASHISHTHA AND ASSOCIATES?</h2>
               <p style={{ color: '#cbd5e1', fontSize: '1.1rem', marginBottom: '1rem', lineHeight: '1.8' }}>
                 We bring decades of experience, deep industry knowledge, and a commitment to absolute integrity. Our proactive approach ensures you're always ahead of regulatory curves.
               </p>
               <ul style={{ listStyle: 'none', padding: 0, marginTop: '2rem' }}>
                 {['Tailored Financial Strategies', 'Dedicated Expert Teams', 'Transparent Communication', 'Tech-Driven Solutions'].map((item, i) => (
                   <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.2rem', fontSize: '1.1rem', fontWeight: 500 }}>
-                    <span style={{ color: 'var(--secondary)', fontSize: '1.4rem' }}>✔</span> {item}
+                    <span style={{ color: 'var(--secondary)', display: 'flex', alignItems: 'center' }}><CheckCircle size={24} /></span> {item}
                   </li>
                 ))}
               </ul>
@@ -154,12 +155,12 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
           {[
             { tag: 'Tax Update', title: 'New Guidelines for Income Tax E-Filing 2024', date: 'March 15, 2024' },
-            { tag: 'Firm News', title: 'VJA Clone Named Top Advisory Firm of the Year', date: 'March 10, 2024' },
+            { tag: 'Firm News', title: 'KUMAR VASHISHTHA AND ASSOCIATES Named Top Advisory Firm of the Year', date: 'March 10, 2024' },
             { tag: 'GST Alert', title: 'Critical Changes to GST Input Tax Credit', date: 'March 5, 2024' }
           ].map((post, i) => (
             <div key={i} style={{ backgroundColor: '#fff', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--border)' }} className="hover-lift animate-slide-up">
               <div style={{ height: '200px', backgroundColor: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '3rem', color: '#94a3b8' }}>📰</span>
+                <span style={{ color: '#94a3b8' }}><Newspaper size={48} /></span>
               </div>
               <div style={{ padding: '1.5rem' }}>
                 <span style={{ backgroundColor: 'rgba(83, 160, 66, 0.1)', color: 'var(--accent)', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>{post.tag}</span>
@@ -180,12 +181,12 @@ export default function Home() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
           {[
-            { name: 'Sanjay Jain', role: 'Managing Partner', exp: '30+ Years Exp', icon: '👨‍💼' },
-            { name: 'Ankita Sharma', role: 'Head of Taxation', exp: '15+ Years Exp', icon: '👩‍💼' },
-            { name: 'Rajiv Mehta', role: 'Audit Director', exp: '20+ Years Exp', icon: '👨‍💼' }
+            { name: 'Kumar Vashishtha', role: 'Founder & Managing Partner', exp: 'Expertise in Audit & Tax', icon: <User size={64} /> },
+            { name: 'Senior Partner', role: 'Head of Taxation', exp: 'Taxation Specialist', icon: <User size={64} /> },
+            { name: 'Audit Director', role: 'Assurance & Audit', exp: 'Statutory Compliance', icon: <User size={64} /> }
           ].map((leader, i) => (
             <div key={i} style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#fff', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }} className="hover-lift">
-              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>{leader.icon}</div>
+              <div style={{ marginBottom: '1rem', color: 'var(--primary)', display: 'flex', justifyContent: 'center' }}>{leader.icon}</div>
               <h3 style={{ fontSize: '1.5rem', color: 'var(--primary)', marginBottom: '0.25rem' }}>{leader.name}</h3>
               <p style={{ fontWeight: 600, color: 'var(--secondary)', marginBottom: '0.5rem' }}>{leader.role}</p>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{leader.exp}</p>
@@ -203,11 +204,13 @@ export default function Home() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
             {[
-              { name: 'Rahul Sharma', company: 'TechFlow Solutions', text: 'VJA Clone has been instrumental in restructuring our corporate taxation. Their advisory is top-notch and always timely.', rating: 5 },
-              { name: 'Priya Desai', company: 'Desai & Co.', text: 'We have outsourced our entire GST compliance to them. 100% peace of mind. Highly recommended.', rating: 5 }
+              { name: 'Rahul', company: 'TechFlow Solutions', text: 'KUMAR VASHISHTHA AND ASSOCIATES has been instrumental in restructuring our corporate taxation. Their advisory is top-notch and always timely.', rating: 5 },
+              { name: 'Priya', company: 'Desai & Co.', text: 'We have outsourced our entire GST compliance to them. 100% peace of mind. Highly recommended.', rating: 5 }
             ].map((review, i) => (
               <div key={i} style={{ padding: '2rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--background)', borderLeft: '4px solid var(--secondary)' }} className="hover-lift">
-                <div style={{ color: '#fbbf24', fontSize: '1.25rem', marginBottom: '1rem' }}>★★★★★</div>
+                <div style={{ display: 'flex', color: '#fbbf24', marginBottom: '1rem', gap: '2px' }}>
+                  {[...Array(5)].map((_, i) => <Star key={i} size={20} fill="currentColor" stroke="none" />)}
+                </div>
                 <p style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontStyle: 'italic', marginBottom: '1.5rem' }}>"{review.text}"</p>
                 <p style={{ fontWeight: 700, color: 'var(--primary)' }}>{review.name}</p>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{review.company}</p>

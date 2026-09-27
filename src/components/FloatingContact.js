@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { MessageCircle, PhoneCall } from 'lucide-react';
+
 export default function FloatingContact() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -22,11 +24,11 @@ export default function FloatingContact() {
 
   return (
     <div style={styles.container} className="animate-fade-in">
-      <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" style={{...styles.btn, ...styles.whatsapp}}>
-        <span style={{ fontSize: '1.5rem' }}>💬</span>
+      <a href="https://wa.me/917701999395?text=Hello%20KUMAR%20VASHISHTHA%20AND%20ASSOCIATES%2C%20I%20would%20like%20to%20know%20more%20about%20your%20services." target="_blank" rel="noopener noreferrer" style={{...styles.btn, ...styles.whatsapp}}>
+        <MessageCircle size={28} />
       </a>
-      <a href="tel:+919876543210" style={{...styles.btn, ...styles.call}}>
-        <span style={{ fontSize: '1.5rem' }}>📞</span>
+      <a href="tel:+917701999395" style={{...styles.btn, ...styles.call}}>
+        <PhoneCall size={28} />
       </a>
     </div>
   );

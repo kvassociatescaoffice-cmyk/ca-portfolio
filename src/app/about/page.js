@@ -4,7 +4,7 @@ export default function About() {
       <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>About Us</h1>
       <div style={styles.content} className="glass">
         <p style={{ marginBottom: '1rem' }}>
-          Established in 1976, VJA Clone is a premier Chartered Accountancy firm based in New Delhi. We pride ourselves on delivering comprehensive financial and compliance solutions to a diverse clientele ranging from startups to multinational corporations.
+          Established in 1976, KUMAR VASHISHTHA AND ASSOCIATES is a premier Chartered Accountancy firm based in New Delhi. We pride ourselves on delivering comprehensive financial and compliance solutions to a diverse clientele ranging from startups to multinational corporations.
         </p>
         <p>
           Our team of dedicated professionals operates with the highest standards of integrity, quality, and confidentiality. We combine decades of experience with modern technological approaches to help our clients navigate the complex regulatory landscapes.

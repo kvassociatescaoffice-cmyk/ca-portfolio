@@ -1,9 +1,11 @@
+import { MapPin, Phone, Mail } from 'lucide-react';
+
 export default function Footer() {
   return (
     <footer style={styles.footer}>
       <div className="container" style={styles.footerGrid}>
         <div style={styles.footerBrand}>
-          <h2 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: '2rem', marginBottom: '1rem', fontStyle: 'italic' }}>CA INDIA</h2>
+          <h2 style={{ fontFamily: 'var(--font-playfair), serif', fontSize: '2rem', marginBottom: '1rem', fontStyle: 'italic' }}>KUMAR VASHISHTHA AND ASSOCIATES</h2>
           <p style={{ color: '#cbd5e1', lineHeight: '1.6', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
             Empowering your business with strategic financial insights, uncompromising integrity, and rigorous compliance.
           </p>
@@ -37,15 +39,15 @@ export default function Footer() {
         <div>
           <h3 style={styles.footerTitle}>Contact</h3>
           <ul style={styles.footerList}>
-            <li style={styles.contactItem}>📍 123 Financial District, New Delhi, India 110001</li>
-            <li style={styles.contactItem}>📞 +91 98765 43210</li>
-            <li style={styles.contactItem}>✉️ contact@caindia.example.com</li>
+            <li style={styles.contactItem}><MapPin size={18} /> 123 Financial District, New Delhi, India 110001</li>
+            <li style={styles.contactItem}><Phone size={18} /> +91 7701 999 395</li>
+            <li style={styles.contactItem}><Mail size={18} /> kvassociatescaoffice@gmail.com</li>
           </ul>
         </div>
       </div>
       <div style={styles.footerBottom}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <p>&copy; {new Date().getFullYear()} CA India Portfolio. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} KUMAR VASHISHTHA AND ASSOCIATES. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.9rem' }}>
             <a href="#" style={{ color: '#cbd5e1' }}>Privacy Policy</a>
             <a href="#" style={{ color: '#cbd5e1' }}>Terms of Service</a>

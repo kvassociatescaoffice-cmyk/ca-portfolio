@@ -1,6 +1,6 @@
 export default function Reviews() {
   const reviews = [
-    { name: 'Rahul Sharma', company: 'TechFlow Solutions', text: 'VJA Clone has been instrumental in restructuring our corporate taxation. Their advisory is top-notch and always timely.', rating: 5 },
+    { name: 'Rahul', company: 'TechFlow Solutions', text: 'KUMAR VASHISHTHA AND ASSOCIATES has been instrumental in restructuring our corporate taxation. Their advisory is top-notch and always timely.', rating: 5 },
     { name: 'Priya Desai', company: 'Desai & Co.', text: 'We have outsourced our entire GST compliance to them. 100% peace of mind. Highly recommended.', rating: 5 },
     { name: 'Amit Singh', company: 'Singh Logistics', text: 'Thorough, professional, and extremely knowledgeable. Their audit team caught discrepancies that saved us millions.', rating: 4 },
     { name: 'Neha Gupta', company: 'Startup Inc.', text: 'As a startup, navigating corporate law was a nightmare until we found them. They made company incorporation a breeze.', rating: 5 },

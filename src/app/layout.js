@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "VJA Clone | Chartered Accountants",
+  title: "KUMAR VASHISHTHA AND ASSOCIATES | Chartered Accountants",
   description: "Premier CA firm providing Audit, Taxation, GST, and Compliance services.",
 };
 
