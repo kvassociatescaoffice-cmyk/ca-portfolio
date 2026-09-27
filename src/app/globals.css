@@ -99,7 +99,6 @@ a {
 .mega-banner-text span { color: var(--dim); font-size: 0.9rem; }
 .chevron { width: 12px !important; height: 12px !important; margin-left: 2px; transition: transform .2s; }
 .navlinks .dropdown:hover .chevron { transform: rotate(180deg); }
-@media(max-width: 900px) { .navlinks { display: none; } }
 
 /* HERO */
 .hero {
@@ -492,3 +491,36 @@ footer ul a:hover{color:var(--gold)}
 .faq-item.open .faq-a { margin-top: 16px; max-height: 500px; opacity: 1; }
 .faq-item .chevron { width: 20px; height: 20px; transition: transform .3s; }
 .faq-item.open .chevron { transform: rotate(180deg); }
+/* MOBILE RESPONSIVENESS */
+.mobile-toggle { display: none; background: transparent; border: none; color: #fff; cursor: pointer; z-index: 100; margin-left: auto; margin-right: 20px; }
+@media(max-width: 900px) {
+  .mobile-toggle { display: block; }
+  .navlinks { display: flex !important; flex-direction: column; position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--navy-900); z-index: 99; padding: 100px 30px 30px; transition: right 0.3s ease; box-shadow: -10px 0 30px rgba(0,0,0,0.2); }
+  .navlinks.open { right: 0; }
+  .navlinks a, .navlinks .dropdown { font-size: 1.2rem; }
+  .megamenu { position: static; opacity: 1; pointer-events: auto; transform: none; box-shadow: none; background: transparent; padding: 10px 0 0 10px; display: none; }
+  .dropdown:hover .megamenu, .dropdown:focus-within .megamenu { display: block; }
+  .mega-grid { grid-template-columns: 1fr; gap: 20px; }
+  .mega-col h4 { color: var(--gold); }
+  .mega-col ul li { color: #fff; opacity: 0.8; }
+  
+  /* Hero */
+  .hero { padding: 120px 20px 60px; }
+  .hero h1 { font-size: 2.5rem; }
+  .hero p { font-size: 1rem; }
+  
+  /* Bento */
+  .bento { grid-template-columns: 1fr !important; grid-template-rows: auto !important; display: flex; flex-direction: column; }
+  .bento .item { grid-column: auto !important; grid-row: auto !important; height: auto !important; }
+  
+  /* Stats & Why */
+  .stats { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .why { grid-template-columns: 1fr; gap: 40px; }
+  
+  /* Process */
+  .process-track { padding: 0 20px; }
+  .process-card { min-width: 85vw; max-width: 85vw; }
+  
+  /* FAQ */
+  .faq-grid { padding: 0 20px; }
+}

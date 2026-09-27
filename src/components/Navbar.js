@@ -1,16 +1,33 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <nav id="nav">
-      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '900', fontSize: '1.6rem', color: '#fff', letterSpacing: '0.5px' }}>
+      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '900', fontSize: '1.6rem', color: '#fff', letterSpacing: '0.5px', zIndex: 100 }}>
         <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
         KVA
       </Link>
-      <div className="navlinks">
+      <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none">
+          {isOpen ? (
+            <path d="M18 6L6 18M6 6l12 12" />
+          ) : (
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+      <div className={`navlinks ${isOpen ? 'open' : ''}`}>
         <Link className={pathname === '/' ? 'active' : ''} href="/">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
             <path d="M4 11l8-7 8 7M6 10v10h12V10" />

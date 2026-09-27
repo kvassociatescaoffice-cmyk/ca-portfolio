@@ -233,8 +233,8 @@ export default function Home() {
           flexWrap: 'wrap',
           boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ flex: '1', minWidth: '300px', display: 'flex', justifyContent: 'center' }}>
-            <img src="/images/cta_professional.jpg" alt="Professional" style={{ width: '100%', maxWidth: '400px', height: 'auto', mixBlendMode: 'multiply', maskImage: 'linear-gradient(to right, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, black 80%, transparent 100%)' }} />
+          <div style={{ flex: '1', minWidth: '300px', display: 'flex', justifyContent: 'center', padding: '4vw' }}>
+            <img src="/images/cta_professional.jpg" alt="Professional" style={{ width: '100%', maxWidth: '400px', height: 'auto', mixBlendMode: 'multiply', maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)' }} />
           </div>
           <div style={{ flex: '1.5', minWidth: '350px', padding: '4vw 6vw', color: '#fff', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h2 style={{ fontSize: 'clamp(2rem, 3vw, 3rem)', color: '#fff', lineHeight: 1.2, margin: 0 }}>Ready to Elevate Your Financial Strategy?</h2>
