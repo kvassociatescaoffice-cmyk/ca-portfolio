@@ -117,9 +117,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--cream)', backgroundImage: 'radial-gradient(at 0% 0%, rgba(255, 237, 213, 0.4) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(254, 215, 170, 0.4) 0px, transparent 50%)', fontFamily: 'var(--font-inter), sans-serif', color: 'var(--navy-900)' }}>
-      <ToastContainer position="bottom-right" toastStyle={{ borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }} />
-      
+    <div style={{ display: 'flex', flexDirection: 'column', margin: 0, padding: 0, minHeight: '100vh', background: 'var(--cream)', backgroundImage: 'radial-gradient(at 0% 0%, rgba(255, 237, 213, 0.4) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(254, 215, 170, 0.4) 0px, transparent 50%)', fontFamily: 'var(--font-inter), sans-serif', color: 'var(--navy-900)' }}>
       {/* Ultra Premium Header */}
       <header style={{ 
         background: 'rgba(15, 23, 42, 0.95)', 
@@ -584,7 +582,7 @@ export default function AdminDashboard() {
 
         </main>
       </div>
-
+      <ToastContainer position="bottom-right" toastStyle={{ borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }} />
       <style jsx>{`
         .spinner { width: 40px; height: 40px; border: 4px solid var(--cream); border-top: 4px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }

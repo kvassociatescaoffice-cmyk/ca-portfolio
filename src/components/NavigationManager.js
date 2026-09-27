@@ -8,12 +8,16 @@ export default function NavigationManager({ children }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
 
+  if (isAdmin) {
+    return <>{children}</>;
+  }
+
   return (
     <>
-      {!isAdmin && <Navbar />}
+      <Navbar />
       <main style={{ flex: 1 }}>{children}</main>
-      {!isAdmin && <Footer />}
-      {!isAdmin && <FloatingContact />}
+      <Footer />
+      <FloatingContact />
     </>
   );
 }
