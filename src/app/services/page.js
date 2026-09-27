@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const servicesData = [
   { 
@@ -30,6 +30,20 @@ const servicesData = [
 
 export default function Services() {
   const [activeTab, setActiveTab] = useState(servicesData[0]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        const tab = servicesData.find(s => s.id === hash);
+        if (tab) setActiveTab(tab);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   return (
     <section>
@@ -86,19 +100,19 @@ const styles = {
     padding: '1rem 1.5rem',
     textAlign: 'left',
     background: '#fff',
-    border: '1px solid var(--border)',
-    borderRadius: 'var(--radius-sm)',
+    border: '1px solid var(--line)',
+    borderRadius: '8px',
     cursor: 'pointer',
     fontSize: '1rem',
     fontWeight: 500,
-    color: 'var(--text-primary)',
+    color: 'var(--ink)',
     transition: 'all 0.3s ease',
   },
   activeTab: {
-    background: 'var(--primary)',
+    background: 'var(--navy-800)',
     color: '#fff',
-    border: '1px solid var(--primary)',
-    boxShadow: 'var(--shadow-md)',
+    border: '1px solid var(--navy-800)',
+    boxShadow: '0 10px 20px rgba(13,29,58,.1)',
     transform: 'translateX(5px)',
   },
   contentPanel: {

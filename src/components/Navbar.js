@@ -4,11 +4,10 @@ import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
-
   return (
     <nav id="nav">
-      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold', fontSize: '1.25rem', color: '#fff' }}>
-        <img src="/images/logo.png" alt="CA India Logo" style={{ height: '36px', width: 'auto' }} />
+      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', fontWeight: '900', fontSize: '1.6rem', color: '#fff', letterSpacing: '0.5px' }}>
+        <img src="/images/logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
         KVA
       </Link>
       <div className="navlinks">

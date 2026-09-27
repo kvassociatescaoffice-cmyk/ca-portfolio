@@ -51,27 +51,16 @@ export default function Home() {
     };
   }, []);
 
+  const toggleFaq = (e) => {
+    const item = e.currentTarget;
+    item.classList.toggle('open');
+  };
+
   return (
     <>
       <section className="hero" id="top">
         <div className="hero-art">
-          <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <rect width="1200" height="800" fill="#123a6b"/>
-            <g opacity=".5" fill="#0d1d3a">
-              <rect x="60" y="260" width="90" height="540"/>
-              <rect x="170" y="180" width="70" height="620"/>
-              <rect x="900" y="120" width="80" height="680"/>
-              <rect x="1000" y="220" width="60" height="580"/>
-              <rect x="1080" y="60" width="70" height="740"/>
-            </g>
-            <circle cx="600" cy="180" r="150" fill="url(#g1)" opacity=".3"/>
-            <defs>
-              <radialGradient id="g1">
-                <stop offset="0%" stopColor="#c99a52"/>
-                <stop offset="100%" stopColor="#123a6b" stopOpacity="0"/>
-              </radialGradient>
-            </defs>
-          </svg>
+          <img src="/images/hero_office.jpg" alt="Professional Office" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <div className="eyebrow">Chartered Accountants · Since 1976</div>
         <h1>Excellence in<br/><span className="grad">Financial Advisory</span></h1>
@@ -124,6 +113,7 @@ export default function Home() {
             <Link href="/services#corporate" className="more">Learn More &rarr;</Link>
           </div>
           <div className="item i5">
+            <img src="/images/advisory.jpg" alt="Transaction Advisory" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
             <h3>Transaction Advisory & M&A</h3>
             <p>End-to-end support for mergers, acquisitions, and restructuring.</p>
             <Link href="/services#advisory" className="more">Explore Advisory &rarr;</Link>
@@ -150,42 +140,115 @@ export default function Home() {
               <li>Tech-driven filing and reporting infrastructure</li>
             </ul>
           </div>
-          <div className="art">
-            <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
-              <rect width="400" height="500" fill="#123a6b"/>
-              <polyline points="30,420 110,340 170,390 240,260 320,300 370,180" fill="none" stroke="#c99a52" strokeWidth="2"/>
-              <g fill="#f0663f">
-                <circle cx="110" cy="340" r="4"/>
-                <circle cx="240" cy="260" r="4"/>
-                <circle cx="370" cy="180" r="4"/>
-              </g>
-              <line x1="30" y1="450" x2="370" y2="450" stroke="rgba(255,255,255,.15)"/>
-              <text x="30" y="80" fill="#fff" fontFamily="Georgia, serif" fontSize="28" fontStyle="italic">Growth,</text>
-              <text x="30" y="118" fill="#c99a52" fontFamily="Georgia, serif" fontSize="28" fontStyle="italic">audited.</text>
-            </svg>
+          <div className="art" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src="/images/why_choose_us.jpg" alt="Why Choose Us" style={{ width: '100%', maxWidth: '400px', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }} />
           </div>
         </div>
       </section>
 
-      <section id="process" className="reveal">
-        <div className="section-head">
+      <section id="process" className="reveal" style={{ padding: '4vw 0' }}>
+        <div className="section-head" style={{ padding: '0 6vw', marginBottom: '2rem' }}>
           <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>How we work together</h2>
           <p>A clear, predictable engagement from first call to filed return.</p>
         </div>
-        <div className="timeline">
-          <div className="tl-step"><div className="line"></div><div className="dot"></div><span className="yr">Step 1</span><h3>Discovery call</h3><p style={{fontSize: '.94rem'}}>We map your structure, filings and pain points in a 30-minute conversation.</p></div>
-          <div className="tl-step"><div className="line"></div><div className="dot"></div><span className="yr">Step 2</span><h3>Proposal & scope</h3><p style={{fontSize: '.94rem'}}>A written engagement letter with fixed fees, deliverables and timelines.</p></div>
-          <div className="tl-step"><div className="line"></div><div className="dot"></div><span className="yr">Step 3</span><h3>Onboarding</h3><p style={{fontSize: '.94rem'}}>Secure document handover and a dedicated team assigned to your account.</p></div>
-          <div className="tl-step"><div className="line"></div><div className="dot"></div><span className="yr">Step 4</span><h3>Execution</h3><p style={{fontSize: '.94rem'}}>Filings, audits and advisory delivered on schedule, reviewed at each stage.</p></div>
-          <div className="tl-step"><span className="yr">Step 5</span><h3>Ongoing advisory</h3><p style={{fontSize: '.94rem'}}>Quarterly reviews and proactive alerts as regulation changes.</p></div>
+        
+        <div style={{ padding: '0 6vw' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '2rem', 
+            padding: '2rem 0', 
+            overflowX: 'auto', 
+            scrollSnapType: 'x mandatory',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }}>
+            <div className="process-card" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+            <span className="yr">Step 1</span>
+            <h3>Discovery call</h3>
+            <p style={{fontSize: '.94rem', color: 'var(--dim)', lineHeight: 1.6}}>We map your structure, filings and pain points in a 30-minute conversation.</p>
+          </div>
+          <div className="process-card" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+            <span className="yr">Step 2</span>
+            <h3>Proposal & scope</h3>
+            <p style={{fontSize: '.94rem', color: 'var(--dim)', lineHeight: 1.6}}>A written engagement letter with fixed fees, deliverables and timelines.</p>
+          </div>
+          <div className="process-card" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+            <span className="yr">Step 3</span>
+            <h3>Onboarding</h3>
+            <p style={{fontSize: '.94rem', color: 'var(--dim)', lineHeight: 1.6}}>Secure document handover and a dedicated team assigned to your account.</p>
+          </div>
+          <div className="process-card" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+            <span className="yr">Step 4</span>
+            <h3>Execution</h3>
+            <p style={{fontSize: '.94rem', color: 'var(--dim)', lineHeight: 1.6}}>Filings, audits and advisory delivered on schedule, reviewed at each stage.</p>
+          </div>
+          <div className="process-card" style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+            <span className="yr">Step 5</span>
+            <h3>Ongoing advisory</h3>
+            <p style={{fontSize: '.94rem', color: 'var(--dim)', lineHeight: 1.6}}>Quarterly reviews and proactive alerts as regulation changes.</p>
+          </div>
+          {/* Spacer to allow scrolling past the last item */}
+          <div style={{ minWidth: '2vw', flexShrink: 0 }}></div>
+        </div>
         </div>
       </section>
 
-      <section className="reveal" style={{paddingTop: 0}}>
-        <div className="ctaband" style={{padding: '80px 6vw'}}>
-          <h2>Ready to scale with confidence?</h2>
-          <p>Join thousands of businesses who trust us with their financial future.</p>
-          <Link href="/contact" className="btn solid">SCHEDULE A CALL</Link>
+      <section className="reveal" style={{ background: 'var(--cream-bg)' }}>
+        <div className="section-head">
+          <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Frequently Asked Questions</h2>
+          <p>Everything you need to know about our services and process.</p>
+        </div>
+        <div className="faq-grid">
+          <div className="faq-item" onClick={toggleFaq}>
+            <div className="faq-q">
+              What documents are required for GST Registration?
+              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+            </div>
+            <div className="faq-a">For GST registration, we generally require your PAN card, Aadhaar card, proof of business registration or incorporation certificate, identity and address proof of promoters/directors, bank account statement or cancelled cheque, and proof of principal place of business.</div>
+          </div>
+          <div className="faq-item" onClick={toggleFaq}>
+            <div className="faq-q">
+              Do you offer remote or virtual CFO services?
+              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+            </div>
+            <div className="faq-a">Yes, our Virtual CFO services provide you with high-level financial strategy, systems analysis, and operational optimization without the cost of a full-time executive. This service is fully remote and scaled to your needs.</div>
+          </div>
+          <div className="faq-item" onClick={toggleFaq}>
+            <div className="faq-q">
+              How often will we communicate during an audit?
+              <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+            </div>
+            <div className="faq-a">We maintain transparent, regular communication. During active audits, you will receive weekly status updates and immediate alerts for any urgent requirements or findings. Once finalized, we hold a comprehensive review meeting.</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="reveal" style={{padding: '4vw 6vw'}}>
+        <div style={{
+          background: 'linear-gradient(110deg, var(--cream) 0%, var(--cream-card) 25%, var(--navy-800) 50%, var(--navy-900) 100%)',
+          borderRadius: '24px',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+        }}>
+          <div style={{ flex: '1', minWidth: '300px', display: 'flex', justifyContent: 'center' }}>
+            <img src="/images/cta_professional.jpg" alt="Professional" style={{ width: '100%', maxWidth: '400px', height: 'auto', mixBlendMode: 'multiply', maskImage: 'linear-gradient(to right, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, black 80%, transparent 100%)' }} />
+          </div>
+          <div style={{ flex: '1.5', minWidth: '350px', padding: '4vw 6vw', color: '#fff', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 3vw, 3rem)', color: '#fff', lineHeight: 1.2, margin: 0 }}>Ready to Elevate Your Financial Strategy?</h2>
+            <p style={{ fontSize: '1.1rem', opacity: 0.9, marginBottom: '10px', color: '#fff' }}>Let's transform your vision into reality. Get a free consultation.</p>
+            <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '10px' }}>
+              <Link href="/contact" className="btn" style={{ background: '#fff', color: 'var(--navy-900)', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>Free Consultation</Link>
+              <Link href="/contact" className="btn" style={{ background: '#25c168', color: '#fff', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>WhatsApp</Link>
+              <Link href="/contact" className="btn" style={{ background: 'var(--orange)', color: '#fff', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>Call Now</Link>
+            </div>
+            <div style={{ display: 'flex', gap: '20px', fontSize: '0.9rem', opacity: 0.8, marginTop: '20px', flexWrap: 'wrap', color: '#fff' }}>
+              <span>📞 +91-7701 999 395</span>
+              <span>✉️ kvassociatescaoffice@gmail.com</span>
+            </div>
+          </div>
         </div>
       </section>
     </>
