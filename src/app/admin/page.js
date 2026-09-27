@@ -57,6 +57,12 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      fetchStats();
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
       if (activeTab === 'overview') fetchStats();
       else if (activeTab === 'leads') fetchLeads();
       else if (activeTab === 'blog') fetchBlogs();
@@ -267,35 +273,39 @@ export default function AdminDashboard() {
             </div>
           )}
           
+          {/* Global KPI Metrics */}
+          {stats.counts.leads > 0 || stats.counts.blogs > 0 || stats.counts.faqs > 0 || stats.counts.news > 0 ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px', marginBottom: '40px' }}>
+              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Total Leads</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.leads}</div>
+              </div>
+              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Published Articles</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.blogs}</div>
+              </div>
+              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Firm Updates</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.news}</div>
+              </div>
+              <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(251, 191, 36, 0.2)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+                <div style={{ color: 'var(--dim)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '8px' }}>Live FAQs</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.faqs}</div>
+              </div>
+            </div>
+          ) : null}
+
           {activeTab === 'overview' && (
             <div className="animate-fade-in">
               <div style={{ marginBottom: '40px' }}>
                 <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>Dashboard Overview</h2>
-                <p style={{ color: 'var(--dim)', marginTop: '8px' }}>At-a-glance metrics and recent activity for your firm.</p>
+                <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Recent activity for your firm.</p>
               </div>
 
               {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><div className="spinner" /></div>
               ) : (
                 <>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '40px' }}>
-                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
-                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Total Leads</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.leads}</div>
-                    </div>
-                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
-                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Published Articles</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.blogs}</div>
-                    </div>
-                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
-                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Firm Updates</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.news}</div>
-                    </div>
-                    <div style={{ background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
-                      <div style={{ color: 'var(--dim)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '700', marginBottom: '12px' }}>Live FAQs</div>
-                      <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--navy-900)' }}>{stats.counts.faqs}</div>
-                    </div>
-                  </div>
 
                   <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', padding: '32px' }}>
                     <h3 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '24px', fontFamily: "var(--font-fraunces), serif" }}>Recent Inquiries</h3>
