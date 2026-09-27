@@ -108,7 +108,7 @@ export default function Navbar() {
             
             <div className="mega-banner">
               <div className="mega-banner-text">
-                <strong>Special Offer: Free Initial Consultation</strong>
+                <strong>Need Assistance? Contact Us Today</strong>
                 <span>Contact us now and transform your business compliance strategy today!</span>
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
