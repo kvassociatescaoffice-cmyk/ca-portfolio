@@ -81,10 +81,13 @@ export default function AdminDashboard() {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/blogs?page=${page}&limit=${limit}`);
+      const res = await fetch(`/api/admin/blogs?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
       if (res.status === 401) return handleLogout();
       const data = await res.json();
-      if (data.success) setBlogs(data.data);
+      if (data.success) {
+        setBlogs(data.data);
+        setTotalPages(data.pagination.pages);
+      }
     } catch (err) {}
     setLoading(false);
   };
@@ -92,10 +95,13 @@ export default function AdminDashboard() {
   const fetchFaqs = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/faqs`);
+      const res = await fetch(`/api/admin/faqs?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
       if (res.status === 401) return handleLogout();
       const data = await res.json();
-      if (data.success) setFaqs(data.data);
+      if (data.success) {
+        setFaqs(data.data);
+        setTotalPages(data.pagination.pages);
+      }
     } catch (err) {}
     setLoading(false);
   };
@@ -103,10 +109,13 @@ export default function AdminDashboard() {
   const fetchNews = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/news`);
+      const res = await fetch(`/api/admin/news?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
       if (res.status === 401) return handleLogout();
       const data = await res.json();
-      if (data.success) setNews(data.data);
+      if (data.success) {
+        setNews(data.data);
+        setTotalPages(data.pagination.pages);
+      }
     } catch (err) {}
     setLoading(false);
   };
@@ -164,6 +173,13 @@ export default function AdminDashboard() {
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} className="pulse-dot" />
             <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase' }}>Online</span>
           </div>
+          <button 
+            onClick={() => setShowHelp(!showHelp)}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', background: showHelp ? 'rgba(255,255,255,0.2)' : 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 20px', borderRadius: '30px', cursor: 'pointer', fontWeight: '500', transition: 'all 0.3s' }} className="hover-gold-border"
+            title="Dashboard Guidelines"
+          >
+            <HelpCircle size={16} /> Help
+          </button>
           <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 20px', borderRadius: '30px', cursor: 'pointer', fontWeight: '500', transition: 'all 0.3s' }} className="hover-gold-border">
             <LogOut size={16} /> Logout
           </button>
@@ -220,15 +236,6 @@ export default function AdminDashboard() {
           overflow: 'hidden'
         }}>
           
-          <button 
-            onClick={() => setShowHelp(!showHelp)}
-            style={{ position: 'absolute', top: '40px', right: '40px', background: 'var(--cream)', border: '1px solid #e2e8f0', color: 'var(--navy-900)', cursor: 'pointer', padding: '10px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}
-            className="hover-shadow"
-            title="Dashboard Guidelines"
-          >
-            <HelpCircle size={20} />
-          </button>
-
           {showHelp && (
             <div className="animate-fade-in" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5))', backdropFilter: 'blur(10px)', padding: '24px', borderRadius: '16px', marginBottom: '32px', border: '1px solid var(--gold)', color: 'var(--navy-900)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
               <h4 style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.1rem' }}><HelpCircle size={20} color="var(--orange)" /> Dashboard Guidelines</h4>
@@ -369,9 +376,24 @@ export default function AdminDashboard() {
                       <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>Blog Content</h2>
                       <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Manage your SEO-optimized articles.</p>
                     </div>
-                    <button onClick={() => setIsEditingBlog(true)} style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale">
-                      <Edit3 size={18} /> New Article
-                    </button>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                      <div style={{ position: 'relative' }}>
+                        <input 
+                          type="text" 
+                          placeholder="Search articles..." 
+                          value={search}
+                          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                          style={{ padding: '14px 20px 14px 48px', borderRadius: '30px', border: '1px solid #cbd5e1', width: '280px', background: '#f8fafc', outline: 'none', transition: 'all 0.3s', fontSize: '0.95rem' }}
+                          className="focus-ring"
+                        />
+                        <div style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: 'var(--dim)' }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                      </div>
+                      <button onClick={() => setIsEditingBlog(true)} style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale">
+                        <Edit3 size={18} /> New Article
+                      </button>
+                    </div>
                   </div>
                   
                   {loading ? (
@@ -457,12 +479,27 @@ export default function AdminDashboard() {
                       <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>FAQ Manager</h2>
                       <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Manage dynamic questions and answers.</p>
                     </div>
-                    <button 
-                      onClick={() => { setCurrentFaq(null); setIsEditingFaq(true); }}
-                      style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale"
-                    >
-                      <HelpCircle size={18} /> Add Question
-                    </button>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                      <div style={{ position: 'relative' }}>
+                        <input 
+                          type="text" 
+                          placeholder="Search questions..." 
+                          value={search}
+                          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                          style={{ padding: '14px 20px 14px 48px', borderRadius: '30px', border: '1px solid #cbd5e1', width: '280px', background: '#f8fafc', outline: 'none', transition: 'all 0.3s', fontSize: '0.95rem' }}
+                          className="focus-ring"
+                        />
+                        <div style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: 'var(--dim)' }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => { setCurrentFaq(null); setIsEditingFaq(true); }}
+                        style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale"
+                      >
+                        <HelpCircle size={18} /> Add Question
+                      </button>
+                    </div>
                   </div>
                   
                   {loading ? (
@@ -517,6 +554,29 @@ export default function AdminDashboard() {
                           ))}
                         </tbody>
                       </table>
+                      
+                      {totalPages > 0 && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderTop: '1px solid #f1f5f9', background: '#fff', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px', flexWrap: 'wrap', gap: '16px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <span style={{ fontSize: '0.9rem', color: 'var(--dim)', fontWeight: '500' }}>Rows per page:</span>
+                            <select 
+                              value={limit} 
+                              onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }}
+                              style={{ padding: '8px 16px', borderRadius: '12px', border: '1px solid #e2e8f0', background: '#f8fafc', color: 'var(--navy-900)', fontWeight: '600', outline: 'none' }}
+                              className="focus-ring"
+                            >
+                              <option value={10}>10</option>
+                              <option value={25}>25</option>
+                              <option value={50}>50</option>
+                            </select>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} style={pageBtnStyle}>&larr; Prev</button>
+                            <span style={{ fontSize: '0.95rem', color: 'var(--navy-800)', fontWeight: '600', background: 'var(--cream)', padding: '6px 16px', borderRadius: '20px' }}>{page} / {totalPages}</span>
+                            <button disabled={page === totalPages || totalPages === 0} onClick={() => setPage(p => p + 1)} style={pageBtnStyle}>Next &rarr;</button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </>

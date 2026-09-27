@@ -6,12 +6,30 @@ import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
 export async function GET(request) {
   await dbConnect();
   
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page')) || 1;
+  const limit = parseInt(searchParams.get('limit')) || 10;
+  const search = searchParams.get('search') || '';
+
   const admin = verifyAdminToken(request);
-  const query = admin ? {} : { isPublished: true };
+  let query = admin ? {} : { isPublished: true };
+
+  if (search) {
+    query.title = { $regex: search, $options: 'i' };
+  }
 
   try {
-    const news = await News.find(query).sort({ createdAt: -1 }).lean();
-    return NextResponse.json({ success: true, data: news });
+    const skip = (page - 1) * limit;
+    const [news, total] = await Promise.all([
+      News.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      News.countDocuments(query)
+    ]);
+    
+    return NextResponse.json({ 
+      success: true, 
+      data: news,
+      pagination: { total, page, pages: Math.ceil(total / limit) }
+    });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }

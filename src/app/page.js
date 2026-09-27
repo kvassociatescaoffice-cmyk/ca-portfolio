@@ -9,14 +9,14 @@ export default function Home() {
 
   useEffect(() => {
     // Fetch dynamic content
-    fetch('/api/admin/faqs')
+    fetch('/api/admin/faqs?limit=50')
       .then(res => res.json())
       .then(data => {
         if (data.success) setFaqs(data.data);
       })
       .catch(() => {});
 
-    fetch('/api/admin/news')
+    fetch('/api/admin/news?limit=10')
       .then(res => res.json())
       .then(data => {
         if (data.success) setNews(data.data);

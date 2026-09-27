@@ -9,10 +9,15 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 10;
+  const search = searchParams.get('search') || '';
   
   // Public vs Admin check
   const admin = verifyAdminToken(request);
-  const query = admin ? {} : { isPublished: true };
+  let query = admin ? {} : { isPublished: true };
+
+  if (search) {
+    query.title = { $regex: search, $options: 'i' };
+  }
 
   try {
     const skip = (page - 1) * limit;

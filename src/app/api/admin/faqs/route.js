@@ -6,12 +6,39 @@ import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
 export async function GET(request) {
   await dbConnect();
   
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page')) || 1;
+  const limit = parseInt(searchParams.get('limit')) || 10;
+  const search = searchParams.get('search') || '';
+
   const admin = verifyAdminToken(request);
-  const query = admin ? {} : { isPublished: true };
+  let query = admin ? {} : { isPublished: true };
+
+  if (search) {
+    query.question = { $regex: search, $options: 'i' };
+  }
 
   try {
-    const faqs = await Faq.find(query).sort({ order: 1, createdAt: -1 }).lean();
-    return NextResponse.json({ success: true, data: faqs });
+    // If limit is 0 or large, fetch all (for homepage which might not pass limit or needs all)
+    // Actually, homepage calls this without query params, so it defaults to limit=10.
+    // Let's allow limit=0 to mean no limit.
+    const skip = (page - 1) * limit;
+    
+    let faqsQuery = Faq.find(query).sort({ order: 1, createdAt: -1 });
+    if (limit > 0) {
+      faqsQuery = faqsQuery.skip(skip).limit(limit);
+    }
+    
+    const [faqs, total] = await Promise.all([
+      faqsQuery.lean(),
+      Faq.countDocuments(query)
+    ]);
+    
+    return NextResponse.json({ 
+      success: true, 
+      data: faqs,
+      pagination: { total, page, pages: limit > 0 ? Math.ceil(total / limit) : 1 }
+    });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }
