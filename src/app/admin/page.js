@@ -7,6 +7,7 @@ import NewsEditor from './NewsEditor';
 import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -223,7 +224,7 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', padding: '40px 5%', gap: '40px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', maxWidth: '1440px', margin: '0 auto', padding: '40px 5%', gap: '40px', flexWrap: 'wrap' }}>
         
         {/* Floating Glassmorphic Sidebar */}
         <aside style={{ 
@@ -321,23 +322,54 @@ export default function AdminDashboard() {
               ) : (
                 <>
 
-                  <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', padding: '32px' }}>
-                    <h3 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '24px', fontFamily: "var(--font-fraunces), serif" }}>Recent Inquiries</h3>
-                    {stats.recentActivity.length === 0 ? (
-                      <p style={{ color: 'var(--dim)' }}>No recent activity to display.</p>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        {stats.recentActivity.map(lead => (
-                          <div key={lead._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                            <div>
-                              <div style={{ fontWeight: '600', color: 'var(--navy-900)', fontSize: '1.05rem', marginBottom: '4px' }}>{lead.name}</div>
-                              <div style={{ color: 'var(--dim)', fontSize: '0.85rem' }}>{lead.email} &bull; {new Date(lead.createdAt).toLocaleDateString()}</div>
-                            </div>
-                            <button onClick={() => { setViewingLead(lead); setActiveTab('leads'); }} style={{ background: '#fff', border: '1px solid #cbd5e1', color: 'var(--navy-900)', padding: '6px 16px', borderRadius: '30px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }} className="hover-shadow">View</button>
-                          </div>
-                        ))}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '32px' }}>
+                    <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', padding: '32px', display: 'flex', flexDirection: 'column' }}>
+                      <h3 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '24px', fontFamily: "var(--font-fraunces), serif" }}>System Metrics Overview</h3>
+                      <div style={{ flex: 1, minHeight: '300px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={[
+                            { name: 'Leads', value: stats.counts.leads, fill: '#10b981' },
+                            { name: 'Blogs', value: stats.counts.blogs, fill: '#fbbf24' },
+                            { name: 'News', value: stats.counts.news, fill: '#3b82f6' },
+                            { name: 'FAQs', value: stats.counts.faqs, fill: '#8b5cf6' }
+                          ]}>
+                            <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--dim)', fontSize: 12 }} />
+                            <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--dim)', fontSize: 12 }} />
+                            <Tooltip cursor={{ fill: 'rgba(0,0,0,0.02)' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }} />
+                            <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                              {
+                                [
+                                  { name: 'Leads', value: stats.counts.leads, fill: '#10b981' },
+                                  { name: 'Blogs', value: stats.counts.blogs, fill: '#fbbf24' },
+                                  { name: 'News', value: stats.counts.news, fill: '#3b82f6' },
+                                  { name: 'FAQs', value: stats.counts.faqs, fill: '#8b5cf6' }
+                                ].map((entry, index) => (
+                                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                                ))
+                              }
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
                       </div>
-                    )}
+                    </div>
+                    <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 40px rgba(0,0,0,0.03)', padding: '32px' }}>
+                      <h3 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '24px', fontFamily: "var(--font-fraunces), serif" }}>Recent Inquiries</h3>
+                      {stats.recentActivity.length === 0 ? (
+                        <p style={{ color: 'var(--dim)' }}>No recent activity to display.</p>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                          {stats.recentActivity.map(lead => (
+                            <div key={lead._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                              <div>
+                                <div style={{ fontWeight: '600', color: 'var(--navy-900)', fontSize: '1.05rem', marginBottom: '4px' }}>{lead.name}</div>
+                                <div style={{ color: 'var(--dim)', fontSize: '0.85rem' }}>{lead.email} &bull; {new Date(lead.createdAt).toLocaleDateString()}</div>
+                              </div>
+                              <button onClick={() => { setViewingLead(lead); setActiveTab('leads'); }} style={{ background: '#fff', border: '1px solid #cbd5e1', color: 'var(--navy-900)', padding: '6px 16px', borderRadius: '30px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: '600' }} className="hover-shadow">View</button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
