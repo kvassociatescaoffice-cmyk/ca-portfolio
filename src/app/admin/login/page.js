@@ -12,6 +12,24 @@ export default function AdminLogin() {
   const router = useRouter();
 
   useEffect(() => {
+    const checkSession = async () => {
+      if (localStorage.getItem('adminAuth') === 'true') {
+        try {
+          const res = await fetch('/api/admin/stats');
+          if (res.ok) {
+            router.push('/admin');
+          } else {
+            localStorage.removeItem('adminAuth');
+          }
+        } catch (err) {
+          localStorage.removeItem('adminAuth');
+        }
+      }
+    };
+    checkSession();
+  }, [router]);
+
+  useEffect(() => {
     let timer;
     if (step === 2 && timeLeft > 0) {
       timer = setInterval(() => {
