@@ -425,34 +425,122 @@ export default function AdminDashboard() {
 
           {activeTab === 'faq' && (
             <div className="animate-fade-in">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap', gap: '20px' }}>
                 <div>
-                  <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)' }}>FAQ Manager</h2>
+                  <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>FAQ Manager</h2>
                   <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Manage dynamic questions and answers.</p>
                 </div>
-                <button style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale">
+                <button 
+                  onClick={() => {
+                    const question = prompt("Enter the FAQ Question:");
+                    if (!question) return;
+                    const answer = prompt("Enter the FAQ Answer:");
+                    if (!answer) return;
+                    const category = prompt("Enter category (e.g. General, Taxation):", "General");
+                    
+                    toast.promise(
+                      fetch('/api/admin/faqs', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ question, answer, category, isPublished: true, order: 0 })
+                      }).then(res => { if (!res.ok) throw new Error(); return res.json(); }).then(() => fetchFaqs()),
+                      { pending: 'Creating FAQ...', success: 'FAQ added successfully!', error: 'Failed to create FAQ' }
+                    );
+                  }}
+                  style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale"
+                >
                   <HelpCircle size={18} /> Add Question
                 </button>
               </div>
-              <div style={{ padding: '60px', textAlign: 'center', background: '#f8fafc', borderRadius: '24px', border: '1px dashed #cbd5e1' }}>
-                <p style={{ color: 'var(--navy-800)', fontSize: '1.2rem', fontWeight: '500' }}>UI integration coming in the next step!</p>
-              </div>
+              
+              {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '80px' }}><div className="spinner" /></div>
+              ) : faqs.length === 0 ? (
+                <div style={{ padding: '80px', textAlign: 'center', background: '#f8fafc', borderRadius: '24px', border: '1px dashed #cbd5e1' }}>
+                  <HelpCircle size={48} color="#cbd5e1" style={{ marginBottom: '16px', display: 'inline-block' }} />
+                  <p style={{ color: 'var(--navy-800)', fontSize: '1.2rem', fontWeight: '500' }}>No FAQs found.</p>
+                </div>
+              ) : (
+                <div style={{ overflowX: 'auto', background: '#fff', borderRadius: '16px', border: '1px solid #f1f5f9', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ background: '#f8fafc' }}>
+                        <th style={thStyle}>Question</th>
+                        <th style={thStyle}>Category</th>
+                        <th style={thStyle}>Status</th>
+                        <th style={thStyle}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {faqs.map(faq => (
+                        <tr key={faq._id} style={{ borderBottom: '1px solid #f1f5f9', transition: 'all 0.2s' }} className="hover-row">
+                          <td style={tdStyle}>
+                            <strong style={{ fontSize: '1.05rem', color: 'var(--navy-900)' }}>{faq.question}</strong>
+                            <div style={{ fontSize: '0.85rem', color: 'var(--dim)', marginTop: '6px', maxWidth: '400px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{faq.answer}</div>
+                          </td>
+                          <td style={tdStyle}><span style={{ background: 'var(--cream)', border: '1px solid #e2e8f0', padding: '6px 12px', borderRadius: '30px', fontSize: '0.85rem', fontWeight: '500' }}>{faq.category || 'General'}</span></td>
+                          <td style={tdStyle}>
+                            <span style={{ background: faq.isPublished ? 'rgba(16, 185, 129, 0.1)' : '#f1f5f9', color: faq.isPublished ? '#059669' : '#64748b', padding: '6px 14px', borderRadius: '30px', fontSize: '0.85rem', fontWeight: '600' }}>
+                              {faq.isPublished ? 'Live' : 'Hidden'}
+                            </span>
+                          </td>
+                          <td style={tdStyle}>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              <button 
+                                onClick={() => {
+                                  toast.promise(
+                                    fetch(`/api/admin/faqs?id=${faq._id}`, { method: 'DELETE' })
+                                      .then(res => { if (!res.ok) throw new Error(); return res.json(); }).then(() => fetchFaqs()),
+                                    { pending: 'Deleting...', success: 'FAQ deleted!', error: 'Failed to delete' }
+                                  );
+                                }}
+                                style={{ background: '#fff', border: '1px solid #fecdd3', color: '#e11d48', padding: '8px 16px', borderRadius: '30px', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }} className="hover-shadow"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'news' && (
             <div className="animate-fade-in">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap', gap: '20px' }}>
                 <div>
-                  <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)' }}>Firm News</h2>
+                  <h2 style={{ fontSize: '2.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', lineHeight: '1.2' }}>Firm News</h2>
                   <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Post public announcements and updates.</p>
                 </div>
-                <button style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale">
+                <button 
+                  onClick={() => {
+                    const title = prompt("Enter the News Title:");
+                    if (!title) return;
+                    const content = prompt("Enter the News Content:");
+                    if (!content) return;
+                    
+                    toast.promise(
+                      fetch('/api/admin/news', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ title, content, isPublished: true })
+                      }).then(res => { if (!res.ok) throw new Error(); return res.json(); }).then(() => setActiveTab('news')),
+                      { pending: 'Publishing news...', success: 'News posted successfully!', error: 'Failed to post news' }
+                    );
+                  }}
+                  style={{ background: 'var(--navy-900)', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(15, 23, 42, 0.15)', transition: 'transform 0.2s' }} className="hover-scale"
+                >
                   <Newspaper size={18} /> Post Update
                 </button>
               </div>
-              <div style={{ padding: '60px', textAlign: 'center', background: '#f8fafc', borderRadius: '24px', border: '1px dashed #cbd5e1' }}>
-                <p style={{ color: 'var(--navy-800)', fontSize: '1.2rem', fontWeight: '500' }}>News feed module pending UI completion.</p>
+              <div style={{ padding: '80px', textAlign: 'center', background: '#f8fafc', borderRadius: '24px', border: '1px dashed #cbd5e1' }}>
+                <Newspaper size={48} color="#cbd5e1" style={{ marginBottom: '16px', display: 'inline-block' }} />
+                <p style={{ color: 'var(--navy-800)', fontSize: '1.2rem', fontWeight: '500' }}>News feature has been activated.</p>
+                <p style={{ color: 'var(--dim)', marginTop: '8px' }}>Click "Post Update" above to create an announcement.</p>
               </div>
             </div>
           )}
@@ -501,7 +589,11 @@ export default function AdminDashboard() {
         .spinner { width: 40px; height: 40px; border: 4px solid var(--cream); border-top: 4px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hover-gold-border:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
-        .hover-row:hover { background-color: #f8fafc !important; transform: scale(1.002); }
+        
+        /* Table row hover and zebra striping */
+        .hover-row:nth-child(even) { background-color: rgba(0, 0, 0, 0.015); }
+        .hover-row:hover { background-color: rgba(251, 191, 36, 0.05) !important; transform: scale(1.002); }
+        
         .hover-shadow:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; transform: translateY(-2px); }
         .hover-bg-gray:hover { background-color: #e2e8f0 !important; }
         .focus-ring:focus { border-color: var(--gold) !important; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2) !important; }

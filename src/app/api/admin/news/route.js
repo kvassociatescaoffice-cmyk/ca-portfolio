@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
-import Faq from '@/models/Faq';
+import News from '@/models/News';
 import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
 
 export async function GET(request) {
@@ -10,8 +10,8 @@ export async function GET(request) {
   const query = admin ? {} : { isPublished: true };
 
   try {
-    const faqs = await Faq.find(query).sort({ order: 1, createdAt: -1 }).lean();
-    return NextResponse.json({ success: true, data: faqs });
+    const news = await News.find(query).sort({ createdAt: -1 }).lean();
+    return NextResponse.json({ success: true, data: news });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Server error' }, { status: 500 });
   }
@@ -24,8 +24,8 @@ export async function POST(request) {
   try {
     await dbConnect();
     const data = await request.json();
-    const faq = await Faq.create(data);
-    return NextResponse.json({ success: true, data: faq });
+    const news = await News.create(data);
+    return NextResponse.json({ success: true, data: news });
   } catch (error) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
@@ -39,8 +39,8 @@ export async function PUT(request) {
     await dbConnect();
     const data = await request.json();
     const { _id, ...updateData } = data;
-    const faq = await Faq.findByIdAndUpdate(_id, updateData, { new: true });
-    return NextResponse.json({ success: true, data: faq });
+    const news = await News.findByIdAndUpdate(_id, updateData, { new: true });
+    return NextResponse.json({ success: true, data: news });
   } catch (error) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
@@ -54,7 +54,7 @@ export async function DELETE(request) {
     await dbConnect();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    await Faq.findByIdAndDelete(id);
+    await News.findByIdAndDelete(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });
