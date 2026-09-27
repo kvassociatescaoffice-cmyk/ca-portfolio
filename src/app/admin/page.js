@@ -5,12 +5,8 @@ import { useRouter } from 'next/navigation';
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('leads');
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('adminAuth') === 'true';
-    }
-    return false;
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Leads State
   const [leads, setLeads] = useState([]);
@@ -21,10 +17,14 @@ export default function AdminDashboard() {
   const [totalLeads, setTotalLeads] = useState(0);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    setIsMounted(true);
+    const auth = localStorage.getItem('adminAuth') === 'true';
+    setIsAuthenticated(auth);
+    
+    if (!auth) {
       window.location.href = '/admin/login';
     }
-  }, [isAuthenticated]);
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated && activeTab === 'leads') {
@@ -59,6 +59,8 @@ export default function AdminDashboard() {
     localStorage.removeItem('adminAuth');
     setIsAuthenticated(false);
   };
+
+  if (!isMounted) return null;
 
   if (!isAuthenticated) {
     return <div style={{ minHeight: '100vh', background: 'var(--navy-900)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>Redirecting to secure login...</div>;
