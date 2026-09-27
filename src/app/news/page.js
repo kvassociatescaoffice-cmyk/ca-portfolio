@@ -55,74 +55,74 @@ export default function NewsPage() {
   ];
 
   return (
-    <div style={{ background: 'var(--navy-900)', minHeight: '100vh', paddingTop: '120px', paddingBottom: '80px', color: '#fff' }}>
+    <div style={{ background: 'var(--cream)', backgroundImage: 'radial-gradient(at 0% 0%, rgba(255, 237, 213, 0.4) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(254, 215, 170, 0.4) 0px, transparent 50%)', minHeight: '100vh', paddingTop: '120px', paddingBottom: '80px', color: 'var(--navy-900)' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
         
         {/* Header section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <div style={{ display: 'inline-block', padding: '6px 16px', background: 'rgba(255,255,255,0.1)', color: 'var(--orange)', borderRadius: '30px', fontSize: '0.85rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
+          <div style={{ display: 'inline-block', padding: '6px 16px', background: 'rgba(240, 102, 63, 0.1)', color: 'var(--orange)', borderRadius: '30px', fontSize: '0.85rem', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '24px' }}>
             Announcements
           </div>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontFamily: 'var(--font-fraunces), serif', color: '#fff', marginBottom: '1rem' }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontFamily: 'var(--font-fraunces), serif', color: 'var(--navy-900)', marginBottom: '1rem' }}>
             Firm Updates & News
           </h1>
-          <p style={{ color: 'var(--lav)', textAlign: 'center', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.6' }}>
+          <p style={{ color: 'var(--dim)', textAlign: 'center', maxWidth: '600px', margin: '0 auto', fontSize: '1.1rem', lineHeight: '1.6' }}>
             Latest announcements, regulatory alerts, and insights.
           </p>
         </div>
 
         {/* Filters */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '40px', background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '40px', background: '#fff', padding: '24px', borderRadius: '16px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
           <div style={{ flex: '1 1 300px', position: 'relative' }}>
-            <Search size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.5)' }} />
+            <Search size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--dim)' }} />
             <input 
               type="text" 
               placeholder="Search updates..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{ width: '100%', padding: '12px 16px 12px 48px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff', fontSize: '1rem', outline: 'none' }}
+              style={{ width: '100%', padding: '12px 16px 12px 48px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', color: 'var(--navy-900)', fontSize: '1rem', outline: 'none' }}
             />
           </div>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <select 
               value={year} 
               onChange={(e) => setYear(e.target.value)}
-              style={{ padding: '12px 16px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff', fontSize: '1rem', outline: 'none', cursor: 'pointer' }}
+              style={{ padding: '12px 16px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', color: 'var(--navy-900)', fontSize: '1rem', outline: 'none', cursor: 'pointer' }}
             >
-              <option value="" style={{ color: '#000' }}>All Years</option>
-              {years.map(y => <option key={y} value={y} style={{ color: '#000' }}>{y}</option>)}
+              <option value="">All Years</option>
+              {years.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
             
             <select 
               value={month} 
               onChange={(e) => setMonth(e.target.value)}
               disabled={!year}
-              style={{ padding: '12px 16px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#fff', fontSize: '1rem', outline: 'none', cursor: year ? 'pointer' : 'not-allowed', opacity: year ? 1 : 0.5 }}
+              style={{ padding: '12px 16px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', color: 'var(--navy-900)', fontSize: '1rem', outline: 'none', cursor: year ? 'pointer' : 'not-allowed', opacity: year ? 1 : 0.5 }}
             >
-              <option value="" style={{ color: '#000' }}>All Months</option>
-              {months.map(m => <option key={m.value} value={m.value} style={{ color: '#000' }}>{m.label}</option>)}
+              <option value="">All Months</option>
+              {months.map(m => <option key={m.value} value={m.value}>{m.label}</option>)}
             </select>
           </div>
         </div>
 
         {/* Content */}
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '80px', color: 'var(--lav)' }}>Loading updates...</div>
+          <div style={{ textAlign: 'center', padding: '80px', color: 'var(--dim)' }}>Loading updates...</div>
         ) : news.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1px dashed rgba(255,255,255,0.1)' }}>
-            <p style={{ fontSize: '1.2rem', color: 'var(--lav)' }}>No firm updates found matching your criteria.</p>
+          <div style={{ textAlign: 'center', padding: '80px', background: '#fff', borderRadius: '24px', border: '1px dashed #cbd5e1' }}>
+            <p style={{ fontSize: '1.2rem', color: 'var(--dim)' }}>No firm updates found matching your criteria.</p>
           </div>
         ) : (
           <>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '30px', marginBottom: '40px' }}>
               {news.map((item) => (
-                <div key={item._id} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '32px', display: 'flex', flexDirection: 'column', transition: 'transform 0.3s, background 0.3s' }} className="hover-scale">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--gold)', fontSize: '0.9rem', marginBottom: '16px', fontWeight: '500' }}>
+                <div key={item._id} style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '16px', padding: '32px', display: 'flex', flexDirection: 'column', transition: 'transform 0.3s, box-shadow 0.3s', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }} className="hover-scale">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--orange)', fontSize: '0.9rem', marginBottom: '16px', fontWeight: '500' }}>
                     <Calendar size={16} />
                     {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </div>
-                  <h2 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '16px', lineHeight: 1.4, fontFamily: "var(--font-fraunces), serif" }}>{item.title}</h2>
-                  <div style={{ fontSize: '1rem', color: 'var(--lav)', lineHeight: 1.7, marginBottom: '24px', flex: 1, opacity: 0.8 }} dangerouslySetInnerHTML={{ __html: item.content }} />
+                  <h2 style={{ fontSize: '1.5rem', color: 'var(--navy-900)', marginBottom: '16px', lineHeight: 1.4, fontFamily: "var(--font-fraunces), serif" }}>{item.title}</h2>
+                  <div style={{ fontSize: '1rem', color: 'var(--dim)', lineHeight: 1.7, marginBottom: '24px', flex: 1 }} dangerouslySetInnerHTML={{ __html: item.content }} />
                   {item.sourceUrl && (
                     <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--orange)', fontWeight: 'bold', fontSize: '1rem', textDecoration: 'none' }}>
                       Read Full Source <ChevronRight size={16} />
@@ -138,19 +138,19 @@ export default function NewsPage() {
                 <button 
                   disabled={page === 1} 
                   onClick={() => setPage(p => p - 1)} 
-                  style={{ padding: '10px 24px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#fff', cursor: page === 1 ? 'not-allowed' : 'pointer', opacity: page === 1 ? 0.5 : 1, transition: 'background 0.2s' }}
-                  onMouseOver={(e) => { if(page !== 1) e.target.style.background = 'rgba(255,255,255,0.1)' }}
-                  onMouseOut={(e) => e.target.style.background = 'transparent'}
+                  style={{ padding: '10px 24px', borderRadius: '30px', border: '1px solid #cbd5e1', background: '#fff', color: 'var(--navy-900)', cursor: page === 1 ? 'not-allowed' : 'pointer', opacity: page === 1 ? 0.5 : 1, transition: 'background 0.2s', fontWeight: '500' }}
+                  onMouseOver={(e) => { if(page !== 1) e.target.style.background = '#f8fafc' }}
+                  onMouseOut={(e) => e.target.style.background = '#fff'}
                 >
                   Previous
                 </button>
-                <span style={{ color: 'var(--lav)', fontSize: '1rem' }}>Page {page} of {totalPages}</span>
+                <span style={{ color: 'var(--dim)', fontSize: '1rem', fontWeight: '500' }}>Page {page} of {totalPages}</span>
                 <button 
                   disabled={page === totalPages} 
                   onClick={() => setPage(p => p + 1)} 
-                  style={{ padding: '10px 24px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.2)', background: 'transparent', color: '#fff', cursor: page === totalPages ? 'not-allowed' : 'pointer', opacity: page === totalPages ? 0.5 : 1, transition: 'background 0.2s' }}
-                  onMouseOver={(e) => { if(page !== totalPages) e.target.style.background = 'rgba(255,255,255,0.1)' }}
-                  onMouseOut={(e) => e.target.style.background = 'transparent'}
+                  style={{ padding: '10px 24px', borderRadius: '30px', border: '1px solid #cbd5e1', background: '#fff', color: 'var(--navy-900)', cursor: page === totalPages ? 'not-allowed' : 'pointer', opacity: page === totalPages ? 0.5 : 1, transition: 'background 0.2s', fontWeight: '500' }}
+                  onMouseOver={(e) => { if(page !== totalPages) e.target.style.background = '#f8fafc' }}
+                  onMouseOut={(e) => e.target.style.background = '#fff'}
                 >
                   Next
                 </button>
