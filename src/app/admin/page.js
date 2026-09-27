@@ -19,8 +19,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
+  const [showHelp, setShowHelp] = useState(false);
 
   // Editor States
   const [isEditingBlog, setIsEditingBlog] = useState(false);
@@ -42,12 +44,12 @@ export default function AdminDashboard() {
       else if (activeTab === 'blog') fetchBlogs();
       else if (activeTab === 'faq') fetchFaqs();
     }
-  }, [isAuthenticated, activeTab, page, search]);
+  }, [isAuthenticated, activeTab, page, limit, search]);
 
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/contacts?page=${page}&limit=10&search=${encodeURIComponent(search)}`);
+      const res = await fetch(`/api/admin/contacts?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`);
       if (res.status === 401) return handleLogout();
       const data = await res.json();
       if (data.success) {
@@ -62,7 +64,7 @@ export default function AdminDashboard() {
   const fetchBlogs = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/blogs?page=${page}&limit=10`);
+      const res = await fetch(`/api/admin/blogs?page=${page}&limit=${limit}`);
       if (res.status === 401) return handleLogout();
       const data = await res.json();
       if (data.success) setBlogs(data.data);
@@ -151,8 +153,28 @@ export default function AdminDashboard() {
           padding: '40px', 
           borderRadius: '24px', 
           boxShadow: '0 20px 40px rgba(0,0,0,0.03)',
-          border: '1px solid rgba(0,0,0,0.05)'
+          border: '1px solid rgba(0,0,0,0.05)',
+          position: 'relative'
         }}>
+          
+          <button 
+            onClick={() => setShowHelp(!showHelp)}
+            style={{ position: 'absolute', top: '40px', right: '40px', background: 'transparent', border: 'none', color: 'var(--dim)', cursor: 'pointer' }}
+            title="Dashboard Guidelines"
+          >
+            <HelpCircle size={24} />
+          </button>
+
+          {showHelp && (
+            <div style={{ background: 'var(--cream)', padding: '20px', borderRadius: '12px', marginBottom: '24px', border: '1px solid var(--gold)', color: 'var(--navy-900)' }}>
+              <h4 style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}><HelpCircle size={18} /> Dashboard Guidelines</h4>
+              <ul style={{ paddingLeft: '20px', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <li><strong>Leads:</strong> Filter by name/email. Manage client inquiries submitted from the homepage.</li>
+                <li><strong>Rows per page:</strong> Use the dropdown at the bottom of any table to show 10, 25, or 50 items.</li>
+                <li><strong>Blogs:</strong> Upload cover images via Google Drive. Drafts are hidden from the public.</li>
+              </ul>
+            </div>
+          )}
           
           {activeTab === 'leads' && (
             <div className="animate-fade-in">
@@ -199,11 +221,25 @@ export default function AdminDashboard() {
                     </tbody>
                   </table>
                   
-                  {totalPages > 1 && (
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '32px' }}>
-                      <button disabled={page === 1} onClick={() => setPage(p => p - 1)} style={pageBtnStyle}>&larr; Previous</button>
-                      <span style={{ fontSize: '0.9rem', color: 'var(--navy-800)', fontWeight: '600' }}>Page {page} of {totalPages}</span>
-                      <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} style={pageBtnStyle}>Next &rarr;</button>
+                  {totalPages > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '32px', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--dim)' }}>Rows per page:</span>
+                        <select 
+                          value={limit} 
+                          onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }}
+                          style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', background: 'var(--cream)', color: 'var(--navy-900)' }}
+                        >
+                          <option value={10}>10</option>
+                          <option value={25}>25</option>
+                          <option value={50}>50</option>
+                        </select>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button disabled={page === 1} onClick={() => setPage(p => p - 1)} style={pageBtnStyle}>&larr; Previous</button>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--navy-800)', fontWeight: '600' }}>Page {page} of {totalPages}</span>
+                        <button disabled={page === totalPages || totalPages === 0} onClick={() => setPage(p => p + 1)} style={pageBtnStyle}>Next &rarr;</button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -263,6 +299,28 @@ export default function AdminDashboard() {
                           ))}
                         </tbody>
                       </table>
+                      
+                      {totalPages > 0 && (
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '32px', flexWrap: 'wrap', gap: '16px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <span style={{ fontSize: '0.9rem', color: 'var(--dim)' }}>Rows per page:</span>
+                            <select 
+                              value={limit} 
+                              onChange={(e) => { setLimit(Number(e.target.value)); setPage(1); }}
+                              style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid #e2e8f0', background: 'var(--cream)', color: 'var(--navy-900)' }}
+                            >
+                              <option value={10}>10</option>
+                              <option value={25}>25</option>
+                              <option value={50}>50</option>
+                            </select>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} style={pageBtnStyle}>&larr; Previous</button>
+                            <span style={{ fontSize: '0.9rem', color: 'var(--navy-800)', fontWeight: '600' }}>Page {page} of {totalPages}</span>
+                            <button disabled={page === totalPages || totalPages === 0} onClick={() => setPage(p => p + 1)} style={pageBtnStyle}>Next &rarr;</button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </>
