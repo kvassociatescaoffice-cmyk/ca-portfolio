@@ -9,29 +9,29 @@ export default function Reviews() {
   ];
 
   return (
-    <div className="container section animate-fade-in">
-      <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>Client Testimonials</h1>
-      <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem', fontSize: '1.1rem' }}>
+    <section>
+      <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Client Testimonials</h1>
+      <p style={{ textAlign: 'center', color: 'var(--ink)', marginBottom: '3rem', fontSize: '1.1rem' }}>
         Don&apos;t just take our word for it. Here&apos;s what our esteemed clients have to say about our services.
       </p>
 
-      <div style={styles.grid}>
+      <div className="contact">
         {reviews.map((review, i) => (
-          <div key={i} style={styles.card} className="glass">
+          <div key={i} style={styles.card} className="insight">
             <div style={{ color: '#fbbf24', fontSize: '1.25rem', marginBottom: '1rem' }}>
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </div>
-            <p style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontStyle: 'italic', marginBottom: '1.5rem', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '1.05rem', color: 'var(--ink)', fontStyle: 'italic', marginBottom: '1.5rem', lineHeight: 1.7 }}>
               &quot;{review.text}&quot;
             </p>
             <div>
-              <p style={{ fontWeight: 700, color: 'var(--primary)' }}>{review.name}</p>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{review.company}</p>
+              <p style={{ fontWeight: 700, color: 'var(--navy-800)' }}>{review.name}</p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--dim)' }}>{review.company}</p>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 

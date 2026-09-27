@@ -148,7 +148,7 @@ const styles = {
     outline: 'none',
   },
   dashboardContainer: {
-    padding: '2rem',
+    padding: '120px 2rem 2rem',
     maxWidth: '1200px',
     margin: '0 auto',
   },

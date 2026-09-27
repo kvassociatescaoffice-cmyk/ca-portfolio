@@ -7,15 +7,8 @@ export default function Navbar() {
 
   return (
     <nav id="nav">
-      <Link href="/" className="brand">
-        <div className="badge">
-          <svg width="24" height="24" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="11" fill="#0d1d3a" />
-            <text x="12" y="11" textAnchor="middle" fill="#f0663f" fontFamily="Fraunces,serif" fontSize="9" fontWeight="600">CA</text>
-            <text x="12" y="18" textAnchor="middle" fill="#c99a52" fontFamily="Inter,sans-serif" fontSize="3.6" letterSpacing="1">INDIA</text>
-            <circle cx="12" cy="12" r="10.3" fill="none" stroke="#1a3d8f" strokeWidth="1" />
-          </svg>
-        </div>
+      <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold', fontSize: '1.25rem', color: '#fff' }}>
+        <img src="/images/logo.png" alt="CA India Logo" style={{ height: '36px', width: 'auto' }} />
         KVA
       </Link>
       <div className="navlinks">
