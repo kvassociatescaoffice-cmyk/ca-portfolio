@@ -6,6 +6,8 @@ import Faq from '@/models/Faq';
 import News from '@/models/News';
 import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   const admin = verifyAdminToken(request);
   if (!admin) return unauthorizedResponse();
