@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { uploadFileToDrive } from '@/lib/drive';
 import { verifyAdminToken, unauthorizedResponse } from '@/lib/authMiddleware';
+import dbConnect from '@/lib/mongodb';
+import Media from '@/models/Media';
 
 export async function POST(request) {
   const admin = verifyAdminToken(request);
@@ -25,7 +27,15 @@ export async function POST(request) {
       throw new Error(result.error);
     }
 
-    return NextResponse.json({ success: true, url: result.url });
+    // Save to database for gallery listing
+    await dbConnect();
+    const mediaDoc = await Media.create({
+      url: result.url,
+      driveId: result.id,
+      name: file.name
+    });
+
+    return NextResponse.json({ success: true, url: result.url, media: mediaDoc });
   } catch (error) {
     console.error('Upload Error:', error);
     return NextResponse.json({ success: false, message: 'Failed to upload image' }, { status: 500 });

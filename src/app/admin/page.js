@@ -43,6 +43,7 @@ export default function AdminDashboard() {
   const [blogs, setBlogs] = useState([]);
   const [faqs, setFaqs] = useState([]);
   const [news, setNews] = useState([]);
+  const [galleryItems, setGalleryItems] = useState([]);
   const [stats, setStats] = useState({ counts: { leads: 0, blogs: 0, faqs: 0, news: 0 }, recentActivity: [] });
 
   useEffect(() => {
@@ -68,6 +69,7 @@ export default function AdminDashboard() {
       else if (activeTab === 'blog') fetchBlogs();
       else if (activeTab === 'faq') fetchFaqs();
       else if (activeTab === 'news') fetchNews();
+      else if (activeTab === 'gallery') fetchGallery();
     }
   }, [isAuthenticated, activeTab, page, limit, search]);
 
@@ -141,6 +143,19 @@ export default function AdminDashboard() {
     setLoading(false);
   };
 
+  const fetchGallery = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/admin/media`);
+      if (res.status === 401) return handleLogout();
+      const data = await res.json();
+      if (data.success) {
+        setGalleryItems(data.data);
+      }
+    } catch (err) {}
+    setLoading(false);
+  };
+
   const handleLogout = () => {
     document.cookie = "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     localStorage.removeItem('adminAuth');
@@ -161,7 +176,8 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (data.success) {
         setGalleryLink(data.url);
-        toast.success("Media uploaded directly to Drive!");
+        toast.success("Media uploaded successfully!");
+        if (activeTab === 'gallery') fetchGallery();
       } else toast.error("Upload failed.");
     } catch (err) { toast.error("Network error"); }
     setUploadingMedia(false);
@@ -207,7 +223,7 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <div style={{ display: 'flex', maxWidth: '1600px', margin: '0 auto', padding: '40px 2%', gap: '40px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', maxWidth: '1200px', margin: '0 auto', padding: '40px 5%', gap: '40px', flexWrap: 'wrap' }}>
         
         {/* Floating Glassmorphic Sidebar */}
         <aside style={{ 
@@ -793,6 +809,37 @@ export default function AdminDashboard() {
                       <input type="text" readOnly value={galleryLink} style={{ flex: 1, padding: '14px 20px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', color: 'var(--navy-900)', outline: 'none' }} />
                       <button onClick={() => { navigator.clipboard.writeText(galleryLink); toast.info('Link copied!'); }} style={{ background: 'var(--orange)', color: '#fff', border: 'none', padding: '0 24px', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold' }}>Copy</button>
                     </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Image Grid */}
+              <div style={{ marginTop: '40px' }}>
+                <h3 style={{ fontSize: '1.5rem', fontFamily: "var(--font-fraunces), serif", color: 'var(--navy-900)', marginBottom: '24px' }}>Previously Uploaded</h3>
+                {loading ? (
+                  <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}><div className="spinner" /></div>
+                ) : galleryItems.length === 0 ? (
+                  <p style={{ color: 'var(--dim)', textAlign: 'center', padding: '40px', background: '#f8fafc', borderRadius: '16px' }}>No media found.</p>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
+                    {galleryItems.map(item => (
+                      <div key={item._id} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
+                        <div style={{ height: '150px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                          <img src={item.url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                          <div style={{ display: 'none', flexDirection: 'column', alignItems: 'center', color: 'var(--dim)' }}>
+                            <ImageIcon size={32} />
+                            <span style={{ fontSize: '0.75rem', marginTop: '8px' }}>File</span>
+                          </div>
+                        </div>
+                        <div style={{ padding: '16px' }}>
+                          <p style={{ fontSize: '0.85rem', color: 'var(--navy-900)', fontWeight: '500', marginBottom: '12px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name || 'Unnamed file'}</p>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button onClick={() => { navigator.clipboard.writeText(item.url); toast.success('Link copied!'); }} style={{ flex: 1, background: '#f8fafc', border: '1px solid #cbd5e1', padding: '6px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: '600', color: 'var(--navy-900)' }}>Copy URL</button>
+                            <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ flex: 1, background: '#f8fafc', border: '1px solid #cbd5e1', padding: '6px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: '600', color: 'var(--navy-900)', textAlign: 'center', textDecoration: 'none' }}>View</a>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
