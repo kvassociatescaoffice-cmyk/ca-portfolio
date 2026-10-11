@@ -125,34 +125,41 @@ export default function Home() {
           <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Our Core Expertise</h2>
           <p>We offer a comprehensive suite of financial and regulatory services tailored to help your business achieve strict compliance and maximum growth.</p>
         </div>
-        <div className="bento">
-          <div className="item i1">
-            <img src="/images/audit.jpg" alt="Audit & Assurance" style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-            <h3>Audit & Assurance</h3>
-            <p>Comprehensive statutory, internal, and tax audits that go beyond mere compliance to offer strategic insights.</p>
-            <Link href="/services#audit" className="more">Explore Audit &rarr;</Link>
+        <div className="bento-container">
+          <div className="bento">
+            <div className="item i1">
+              <img src="/images/audit.jpg" alt="Audit & Assurance" style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
+              <h3>Audit & Assurance</h3>
+              <p>Comprehensive statutory, internal, and tax audits that go beyond mere compliance to offer strategic insights.</p>
+              <Link href="/services#audit" className="more">Explore Audit &rarr;</Link>
+            </div>
+            <div className="item i2">
+              <img src="/images/tax.jpg" alt="Direct Taxation" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
+              <h3>Direct Taxation</h3>
+              <p>Navigate complex tax regulations with confidence. We offer strategic tax planning and representation to minimize liabilities.</p>
+              <Link href="/services#tax" className="more">Tax Services &rarr;</Link>
+            </div>
+            <div className="item i3">
+              <img src="/images/gst.jpg" alt="GST Compliance" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
+              <h3>GST Compliance</h3>
+              <p>End-to-end GST filings, returns, compliance audits, and regulatory representations.</p>
+              <Link href="/services#gst" className="more">Learn More &rarr;</Link>
+            </div>
+            <div className="item i4">
+              <img src="/images/law.jpg" alt="Corporate Law" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
+              <h3>Corporate Law</h3>
+              <p>Company incorporation, ROC compliances, secretarial management, and restructuring.</p>
+              <Link href="/services#corporate" className="more">Learn More &rarr;</Link>
+            </div>
+            <div className="item i5">
+              <img src="/images/advisory.jpg" alt="Transaction Advisory" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
+              <h3>Transaction Advisory & M&A</h3>
+              <p>End-to-end support for mergers, acquisitions, valuations, and corporate restructuring.</p>
+              <Link href="/services#advisory" className="more">Explore Advisory &rarr;</Link>
+            </div>
           </div>
-          <div className="item i2">
-            <img src="/images/tax.jpg" alt="Direct Taxation" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-            <h3>Direct Taxation</h3>
-            <p>Navigate complex tax regulations with confidence. We offer strategic tax planning and representation to minimize liabilities.</p>
-            <Link href="/services#tax" className="more">Tax Services &rarr;</Link>
-          </div>
-          <div className="item i3">
-            <img src="/images/gst.jpg" alt="GST Compliance" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-            <h3>GST Compliance</h3>
-            <Link href="/services#gst" className="more">Learn More &rarr;</Link>
-          </div>
-          <div className="item i4">
-            <img src="/images/law.jpg" alt="Corporate Law" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-            <h3>Corporate Law</h3>
-            <Link href="/services#corporate" className="more">Learn More &rarr;</Link>
-          </div>
-          <div className="item i5">
-            <img src="/images/advisory.jpg" alt="Transaction Advisory" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-            <h3>Transaction Advisory & M&A</h3>
-            <p>End-to-end support for mergers, acquisitions, and restructuring.</p>
-            <Link href="/services#advisory" className="more">Explore Advisory &rarr;</Link>
+          <div className="carousel-hint">
+            <span>&larr; Swipe to explore services &rarr;</span>
           </div>
         </div>
       </section>
@@ -225,6 +232,9 @@ export default function Home() {
           </div>
           {/* Spacer to allow scrolling past the last item */}
           <div style={{ minWidth: '2vw', flexShrink: 0 }}></div>
+        </div>
+        <div className="carousel-hint" style={{ marginTop: '4px' }}>
+          <span>&larr; Swipe through 5 engagement steps &rarr;</span>
         </div>
         </div>
       </section>
@@ -362,7 +372,9 @@ export default function Home() {
           boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
         }}>
           <div style={{ flex: '1', minWidth: 'min(280px, 100%)', display: 'flex', justifyContent: 'center', padding: 'clamp(20px, 4vw, 40px)' }}>
-            <img src="/images/cta_professional.jpg" alt="Professional" style={{ width: '100%', maxWidth: '400px', height: 'auto', mixBlendMode: 'multiply', maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)' }} />
+            <div style={{ position: 'relative', maxWidth: '340px', width: '100%', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 45px rgba(0,0,0,0.35)', border: '1px solid rgba(255,255,255,0.18)' }}>
+              <img src="/images/cta_professional.jpg" alt="Chartered Accountant" style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'cover' }} />
+            </div>
           </div>
           <div style={{ flex: '1.5', minWidth: 'min(280px, 100%)', padding: 'clamp(24px, 4vw, 60px)', color: '#fff', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)', color: '#fff', lineHeight: 1.2, margin: 0 }}>Ready to Elevate Your Financial Strategy?</h2>

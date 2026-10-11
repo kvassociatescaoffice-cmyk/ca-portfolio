@@ -1,3 +1,4 @@
+'use client';
 export default function Reviews() {
   const reviews = [
     { name: 'Rahul', company: 'TechFlow Solutions', text: 'KUMAR VASHISHTHA AND ASSOCIATES has been instrumental in restructuring our corporate taxation. Their advisory is top-notch and always timely.', rating: 5 },
@@ -15,9 +16,9 @@ export default function Reviews() {
         Don&apos;t just take our word for it. Here&apos;s what our esteemed clients have to say about our services.
       </p>
 
-      <div style={styles.grid}>
+      <div className="reviews-grid-carousel" style={styles.grid}>
         {reviews.map((review, i) => (
-          <div key={i} style={styles.card} className="insight">
+          <div key={i} style={styles.card} className="insight review-card-item">
             <div style={{ color: '#fbbf24', fontSize: '1.25rem', marginBottom: '1rem' }}>
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </div>
@@ -31,6 +32,29 @@ export default function Reviews() {
           </div>
         ))}
       </div>
+      <style jsx>{`
+        @media(max-width: 768px) {
+          .reviews-grid-carousel {
+            display: flex !important;
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            scroll-snap-type: x mandatory !important;
+            gap: 16px !important;
+            padding-bottom: 20px !important;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .reviews-grid-carousel::-webkit-scrollbar {
+            display: none;
+          }
+          .review-card-item {
+            flex: 0 0 min(82vw, 320px) !important;
+            min-width: min(82vw, 320px) !important;
+            scroll-snap-align: center !important;
+            padding: 1.75rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

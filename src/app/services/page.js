@@ -56,9 +56,9 @@ export default function Services() {
     <section className="subpage-section" style={{ paddingTop: '120px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '2.5rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Our Services</h1>
       
-      <div style={styles.container}>
+      <div className="services-layout-container" style={styles.container}>
         {/* Sidebar Tabs */}
-        <div style={styles.tabsList}>
+        <div className="services-tabs-carousel" style={styles.tabsList}>
           {servicesData.map(s => (
             <button 
               key={s.id} 
@@ -86,6 +86,28 @@ export default function Services() {
           <Link href="/contact" className="btn solid" style={{ marginTop: '2rem', display: 'inline-block', textDecoration: 'none' }}>Request Consultation</Link>
         </div>
       </div>
+      <style jsx>{`
+        @media(max-width: 800px) {
+          .services-tabs-carousel {
+            display: flex !important;
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            padding-bottom: 8px !important;
+            gap: 10px !important;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .services-tabs-carousel::-webkit-scrollbar {
+            display: none;
+          }
+          .services-tabs-carousel button {
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            padding: 10px 18px !important;
+            font-size: 0.9rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
@@ -101,19 +123,21 @@ const styles = {
     minWidth: 'min(280px, 100%)',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
+    gap: '0.6rem',
   },
   tabBtn: {
     padding: '1rem 1.25rem',
     textAlign: 'left',
     background: '#fff',
     border: '1px solid var(--line)',
-    borderRadius: '10px',
+    borderRadius: '12px',
     cursor: 'pointer',
     fontSize: '0.95rem',
     fontWeight: 500,
     color: 'var(--ink)',
     transition: 'all 0.2s ease',
+    whiteSpace: 'normal',
+    flexShrink: 0,
   },
   activeTab: {
     background: 'var(--navy-800)',
@@ -126,7 +150,8 @@ const styles = {
     minWidth: 'min(280px, 100%)',
     padding: 'clamp(1.5rem, 4vw, 3rem)',
     borderRadius: 'var(--radius-lg)',
-    background: 'var(--cream-card)',
-    border: '1px solid var(--line)'
+    background: '#ffffff',
+    border: '1px solid var(--line)',
+    boxShadow: '0 8px 24px rgba(13,29,58,0.04)'
   }
 };

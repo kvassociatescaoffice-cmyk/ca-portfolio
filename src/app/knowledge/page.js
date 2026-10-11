@@ -33,7 +33,7 @@ export default function KnowledgeCenter() {
       </p>
 
       {/* Filter Tabs */}
-      <div style={styles.filterContainer}>
+      <div className="knowledge-tags-carousel" style={styles.filterContainer}>
         {tags.map(tag => (
           <button 
             key={tag} 
@@ -47,6 +47,25 @@ export default function KnowledgeCenter() {
           </button>
         ))}
       </div>
+      <style jsx>{`
+        @media(max-width: 768px) {
+          .knowledge-tags-carousel {
+            justify-content: flex-start !important;
+            overflow-x: auto !important;
+            flex-wrap: nowrap !important;
+            padding-bottom: 12px !important;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+          }
+          .knowledge-tags-carousel::-webkit-scrollbar {
+            display: none;
+          }
+          .knowledge-tags-carousel button {
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+          }
+        }
+      `}</style>
 
       {/* Grid */}
       {loading ? (

@@ -44,12 +44,12 @@ export default function Navbar() {
             </span>
           </div>
         </Link>
-        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none">
+        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" type="button">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2.5" fill="none">
             {isOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
+              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
             ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
+              <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" />
             )}
           </svg>
         </button>
@@ -83,39 +83,39 @@ export default function Navbar() {
             <div className={`megamenu ${mobileSubmenu === 'services' ? 'show-mobile' : ''}`}>
             <div className="mega-grid">
               <div className="mega-col">
-                <Link href="/services#audit"><h4>Audit & Assurance &rarr;</h4></Link>
+                <Link href="/services#audit" onClick={() => setIsOpen(false)}><h4>Audit & Assurance &rarr;</h4></Link>
                 <ul>
-                  <li>Statutory Audit</li>
-                  <li>Internal Audit</li>
-                  <li>Tax Audit</li>
-                  <li>Risk Management</li>
+                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Statutory Audit</Link></li>
+                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Internal Audit</Link></li>
+                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Tax Audit</Link></li>
+                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Risk Management</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#tax"><h4>Direct Taxation &rarr;</h4></Link>
+                <Link href="/services#tax" onClick={() => setIsOpen(false)}><h4>Direct Taxation &rarr;</h4></Link>
                 <ul>
-                  <li>Corporate Tax Planning</li>
-                  <li>Tax Compliance</li>
-                  <li>Assessments</li>
-                  <li>Appellate Representation</li>
+                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Corporate Tax Planning</Link></li>
+                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Tax Compliance</Link></li>
+                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Assessments</Link></li>
+                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Appellate Representation</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#gst"><h4>GST & Indirect Tax &rarr;</h4></Link>
+                <Link href="/services#gst" onClick={() => setIsOpen(false)}><h4>GST & Indirect Tax &rarr;</h4></Link>
                 <ul>
-                  <li>GST Advisory</li>
-                  <li>GST Filing</li>
-                  <li>GST Assessments</li>
-                  <li>Compliance Checks</li>
+                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Advisory</Link></li>
+                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Filing</Link></li>
+                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Assessments</Link></li>
+                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>Compliance Checks</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#corporate"><h4>Corporate Law &rarr;</h4></Link>
+                <Link href="/services#corporate" onClick={() => setIsOpen(false)}><h4>Corporate Law &rarr;</h4></Link>
                 <ul>
-                  <li>Company Incorporation</li>
-                  <li>Secretarial Services</li>
-                  <li>Restructuring</li>
-                  <li>M&A Support</li>
+                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Company Incorporation</Link></li>
+                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Secretarial Services</Link></li>
+                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Restructuring</Link></li>
+                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>M&A Support</Link></li>
                 </ul>
               </div>
             </div>
@@ -191,7 +191,7 @@ export default function Navbar() {
           </svg>
           Contact
         </Link>
-        <Link className="mobile-drawer-cta btn solid" href="/contact" onClick={() => setIsOpen(false)} style={{ display: 'none', marginTop: '20px', textAlign: 'center', width: '100%', padding: '12px' }}>
+        <Link className="mobile-drawer-cta btn solid" href="/contact" onClick={() => setIsOpen(false)} style={{ marginTop: '20px', textAlign: 'center', width: '100%', padding: '14px' }}>
           Get Started
         </Link>
       </div>
