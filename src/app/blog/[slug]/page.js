@@ -6,17 +6,29 @@ import Link from 'next/link';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  await dbConnect();
+  const blog = await Blog.findOne({ slug, isPublished: true }).lean();
+  if (!blog) return { title: 'Article Not Found' };
+  return {
+    title: `${blog.seoTitle || blog.title} | Kumar Vashishtha & Associates`,
+    description: blog.seoDescription || blog.excerpt || 'Financial & Tax advisory insights.',
+  };
+}
+
 export default async function BlogPost({ params }) {
+  const { slug } = await params;
   await dbConnect();
   
-  const blog = await Blog.findOne({ slug: params.slug, isPublished: true }).lean();
+  const blog = await Blog.findOne({ slug, isPublished: true }).lean();
   
   if (!blog) {
     notFound();
   }
 
   return (
-    <div style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '40px', paddingBottom: '80px' }}>
+    <div style={{ background: '#f8fafc', minHeight: '100vh', paddingTop: '120px', paddingBottom: '80px' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 24px' }}>
         
         <Link href="/blog" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--dim)', textDecoration: 'none', marginBottom: '32px', fontWeight: '500' }}>

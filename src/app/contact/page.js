@@ -35,11 +35,11 @@ export default function Contact() {
   };
 
   return (
-    <section>
+    <section className="subpage-section" style={{ paddingTop: '120px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
       <ToastContainer position="bottom-right" />
-      <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Contact Us</h1>
+      <h1 style={{ textAlign: 'center', marginBottom: '2.5rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Contact Us</h1>
       <div className="contact">
-        <div style={styles.info}>
+        <div style={{ ...styles.info, background: 'var(--cream-card)', border: '1px solid var(--line)' }}>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--navy-800)' }}>Our Office</h3>
           <p style={{ color: 'var(--ink)' }}>123 Financial District<br/>New Delhi, India 110001</p>
           <br/>

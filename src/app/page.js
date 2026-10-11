@@ -7,40 +7,30 @@ export default function Home() {
   const [faqs, setFaqs] = useState([]);
   const [news, setNews] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     // Fetch dynamic content
-    fetch('/api/admin/faqs?limit=50')
+    fetch('/api/admin/faqs?limit=10')
       .then(res => res.json())
       .then(data => {
-        if (data.success) setFaqs(data.data);
+        if (data.success && Array.isArray(data.data)) setFaqs(data.data);
       })
       .catch(() => {});
 
     fetch('/api/admin/news?limit=3')
       .then(res => res.json())
       .then(data => {
-        if (data.success) setNews(data.data);
+        if (data.success && Array.isArray(data.data)) setNews(data.data);
       })
       .catch(() => {});
 
     fetch('/api/admin/blogs?limit=3')
       .then(res => res.json())
       .then(data => {
-        if (data.success) setBlogs(data.data);
+        if (data.success && Array.isArray(data.data)) setBlogs(data.data);
       })
       .catch(() => {});
-
-    // Reveal animation
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
     // Stats counter animation
     const counters = document.querySelectorAll('.stat .n');
@@ -72,15 +62,35 @@ export default function Home() {
     counters.forEach((c) => cio.observe(c));
     
     return () => {
-      io.disconnect();
       cio.disconnect();
     };
   }, []);
 
-  const toggleFaq = (e) => {
-    const item = e.currentTarget;
-    item.classList.toggle('open');
-  };
+  // Ensure reveal elements are observed and shown even when dynamically loaded
+  useEffect(() => {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+        }
+      });
+    }, { threshold: 0.05 });
+
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('in');
+        }
+        io.observe(el);
+      });
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      io.disconnect();
+    };
+  }, [faqs, news, blogs]);
 
   return (
     <>
@@ -154,7 +164,7 @@ export default function Home() {
         <div className="stat"><div className="n">150+</div><div className="l">Professionals</div></div>
       </div>
 
-      <section id="why">
+      <section id="why" style={{ background: "#ffffff", borderTop: "1px solid rgba(22,35,61,0.06)" }}>
         <div className="why reveal">
           <div>
             <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Why choose Kumar Vashishtha & Associates?</h2>
@@ -172,7 +182,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="process" className="reveal" style={{ padding: '4vw 0' }}>
+      <section id="process" className="reveal" style={{ background: "#ffffff", borderBottom: "1px solid rgba(22,35,61,0.06)", paddingLeft: 0, paddingRight: 0 }}>
         <div className="section-head" style={{ padding: '0 6vw', marginBottom: '2rem' }}>
           <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>How we work together</h2>
           <p>A clear, predictable engagement from first call to filed return.</p>
@@ -220,17 +230,17 @@ export default function Home() {
       </section>
 
       {news.length > 0 && (
-        <section className="reveal" style={{ padding: '4vw 6vw', background: '#fff' }}>
+        <section className="reveal" style={{ background: 'var(--cream)' }}>
           <div className="section-head" style={{ marginBottom: '40px' }}>
             <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Firm News & Updates</h2>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
               <p style={{ margin: 0 }}>Latest announcements, regulatory alerts, and insights from our experts.</p>
-              <Link href="/news" className="btn ghost" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>View All Updates &rarr;</Link>
+              <Link href="/news" className="btn ghost-dark" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>View All Updates &rarr;</Link>
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
             {news.slice(0, 3).map((item) => (
-              <div key={item._id} style={{ border: '1px solid #f1f5f9', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', transition: 'transform 0.3s' }} className="hover-scale">
+              <div key={item._id} style={{ background: '#fff', border: '1px solid rgba(22,35,61,0.08)', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 14px rgba(0,0,0,0.03)', transition: 'transform 0.3s' }} className="hover-scale">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--dim)', fontSize: '0.85rem', marginBottom: '12px' }}>
                   <Calendar size={14} />
                   {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -248,41 +258,18 @@ export default function Home() {
         </section>
       )}
 
-      {faqs.length > 0 && (
-        <section className="reveal" style={{ background: 'var(--cream-bg)' }}>
-          <div className="section-head">
-            <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Frequently Asked Questions</h2>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
-              <p style={{ margin: 0 }}>Everything you need to know about our services and process.</p>
-              <Link href="/faq" className="btn ghost" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>View All FAQs &rarr;</Link>
-            </div>
-          </div>
-          <div className="faq-grid">
-            {faqs.map(faq => (
-              <div key={faq._id} className="faq-item" onClick={toggleFaq}>
-                <div className="faq-q">
-                  {faq.question}
-                  <svg className="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-                </div>
-                <div className="faq-a" dangerouslySetInnerHTML={{ __html: faq.answer }} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {blogs.length > 0 && (
-        <section className="reveal" style={{ padding: '4vw 6vw', background: '#fff' }}>
+        <section className="reveal" style={{ background: 'var(--cream)', paddingTop: '0px' }}>
           <div className="section-head" style={{ marginBottom: '40px' }}>
             <h2 style={{fontSize: 'clamp(1.9rem, 3.6vw, 3rem)'}}>Technical Blogs</h2>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px' }}>
               <p style={{ margin: 0 }}>Deep dives into taxation, compliance, and corporate structuring.</p>
-              <Link href="/blog" className="btn ghost" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>View All Blogs &rarr;</Link>
+              <Link href="/blog" className="btn ghost-dark" style={{ padding: '8px 20px', fontSize: '0.9rem' }}>View All Blogs &rarr;</Link>
             </div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
             {blogs.slice(0, 3).map((item) => (
-              <div key={item._id} style={{ border: '1px solid #f1f5f9', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', transition: 'transform 0.3s', display: 'flex', flexDirection: 'column' }} className="hover-scale">
+              <div key={item._id} style={{ background: '#fff', border: '1px solid rgba(22,35,61,0.08)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 14px rgba(0,0,0,0.03)', transition: 'transform 0.3s', display: 'flex', flexDirection: 'column' }} className="hover-scale">
                 {item.coverImage && (
                   <img src={item.coverImage} alt={item.title} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                 )}
@@ -305,9 +292,68 @@ export default function Home() {
         </section>
       )}
 
-      <section className="reveal" style={{padding: '4vw 6vw'}}>
+      {faqs.length > 0 && (
+        <section className="reveal" style={{ background: '#ffffff', borderTop: '1px solid rgba(22,35,61,0.06)', borderBottom: '1px solid rgba(22,35,61,0.06)' }}>
+          <div className="faq-section-wrap">
+            <div className="faq-sidebar">
+              <div style={{ display: 'inline-block', padding: '5px 14px', background: 'rgba(240, 102, 63, 0.1)', color: 'var(--orange)', borderRadius: '30px', fontSize: '0.82rem', fontWeight: 'bold', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '16px' }}>
+                Support & Clarity
+              </div>
+              <h2 style={{ fontSize: 'clamp(2rem, 3.6vw, 3.2rem)', color: 'var(--navy-900)', lineHeight: 1.15, marginBottom: '16px' }}>Frequently Asked Questions</h2>
+              <p style={{ color: 'var(--dim)', fontSize: '1.02rem', lineHeight: 1.7, marginBottom: '24px' }}>
+                Clear, transparent guidance on compliance timelines, audits, tax representations, and working with our senior partners.
+              </p>
+              
+              <div className="faq-prompt-card">
+                <h4>Have a specific query?</h4>
+                <p>Can&apos;t find what you&apos;re looking for? Speak directly with our chartered accountants.</p>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  <Link href="/faq" className="btn ghost-dark" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                    View All FAQs &rarr;
+                  </Link>
+                  <Link href="/contact" className="btn solid" style={{ padding: '9px 18px', fontSize: '0.88rem' }}>
+                    Ask Our Team
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="faq-grid">
+              {faqs.slice(0, 6).map(faq => {
+                const isOpen = openFaq === faq._id;
+                return (
+                  <div 
+                    key={faq._id} 
+                    className={`faq-item ${isOpen ? 'open' : ''}`} 
+                    onClick={() => setOpenFaq(isOpen ? null : faq._id)}
+                  >
+                    <div className="faq-q">
+                      <span>{faq.question}</span>
+                      <svg 
+                        className="chevron" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2"
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </div>
+                    <div 
+                      className="faq-a" 
+                      dangerouslySetInnerHTML={{ __html: faq.answer }} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="reveal" style={{ padding: 'clamp(40px, 6vw, 80px) clamp(16px, 6vw, 60px)', background: 'var(--cream)' }}>
         <div style={{
-          background: 'linear-gradient(110deg, var(--cream) 0%, var(--cream-card) 25%, var(--navy-800) 50%, var(--navy-900) 100%)',
+          background: 'linear-gradient(135deg, #0d1d3a 0%, #12335e 50%, #16233d 100%)', boxShadow: '0 24px 60px rgba(13,29,58,0.18)', border: '1px solid rgba(255,255,255,0.08)',
           borderRadius: '24px',
           overflow: 'hidden',
           display: 'flex',
@@ -315,18 +361,18 @@ export default function Home() {
           flexWrap: 'wrap',
           boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ flex: '1', minWidth: '300px', display: 'flex', justifyContent: 'center', padding: '4vw' }}>
+          <div style={{ flex: '1', minWidth: 'min(280px, 100%)', display: 'flex', justifyContent: 'center', padding: 'clamp(20px, 4vw, 40px)' }}>
             <img src="/images/cta_professional.jpg" alt="Professional" style={{ width: '100%', maxWidth: '400px', height: 'auto', mixBlendMode: 'multiply', maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 72%)' }} />
           </div>
-          <div style={{ flex: '1.5', minWidth: '350px', padding: '4vw 6vw', color: '#fff', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 3vw, 3rem)', color: '#fff', lineHeight: 1.2, margin: 0 }}>Ready to Elevate Your Financial Strategy?</h2>
-            <p style={{ fontSize: '1.1rem', opacity: 0.9, marginBottom: '10px', color: '#fff' }}>Let's transform your vision into reality. Contact us today.</p>
-            <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '10px' }}>
+          <div style={{ flex: '1.5', minWidth: 'min(280px, 100%)', padding: 'clamp(24px, 4vw, 60px)', color: '#fff', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 3rem)', color: '#fff', lineHeight: 1.2, margin: 0 }}>Ready to Elevate Your Financial Strategy?</h2>
+            <p style={{ fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', opacity: 0.9, marginBottom: '10px', color: '#fff' }}>Let's transform your vision into reality. Contact us today.</p>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
               <Link href="/contact" className="btn" style={{ background: '#fff', color: 'var(--navy-900)', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>Contact Us</Link>
               <Link href="/contact" className="btn" style={{ background: '#25c168', color: '#fff', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>WhatsApp</Link>
               <Link href="/contact" className="btn" style={{ background: 'var(--orange)', color: '#fff', border: 'none', padding: '12px 24px', fontWeight: 'bold' }}>Call Now</Link>
             </div>
-            <div style={{ display: 'flex', gap: '20px', fontSize: '0.9rem', opacity: 0.8, marginTop: '20px', flexWrap: 'wrap', color: '#fff' }}>
+            <div style={{ display: 'flex', gap: '16px', fontSize: '0.85rem', opacity: 0.85, marginTop: '10px', flexWrap: 'wrap', color: '#fff' }}>
               <span>📞 +91-7701 999 395</span>
               <span>✉️ kvassociatescaoffice@gmail.com</span>
             </div>

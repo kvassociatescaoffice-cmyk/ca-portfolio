@@ -10,17 +10,20 @@ export async function POST(request) {
     const body = await request.json();
     
     // Basic validation
-    if (!body.name || !body.email) {
-      return NextResponse.json({ success: false, message: 'Name and email are required.' }, { status: 400 });
+    if (!body.name || !body.email || !body.message) {
+      return NextResponse.json({ success: false, message: 'Name, email, and message are required.' }, { status: 400 });
     }
+
+    const topic = body.service || body.subject || 'General Inquiry';
 
     // Save lead
     const newContact = await Contact.create({
       name: body.name,
       email: body.email,
       phone: body.phone || '',
-      subject: body.subject || 'General Inquiry',
-      message: body.message || '',
+      service: topic,
+      subject: topic,
+      message: body.message,
       status: 'new'
     });
 
@@ -34,6 +37,6 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data: newContact }, { status: 201 });
   } catch (error) {
     console.error('Contact Submission Error:', error);
-    return NextResponse.json({ success: false, message: 'Failed to submit contact form.' }, { status: 500 });
+    return NextResponse.json({ success: false, message: error.message || 'Failed to submit contact form.' }, { status: 500 });
   }
 }

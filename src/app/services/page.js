@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const servicesData = [
   { 
@@ -25,6 +26,12 @@ const servicesData = [
     title: 'Corporate Law', 
     desc: 'Company incorporation, secretarial services, and restructuring.',
     details: 'From incorporating new entities to managing complex mergers and secretarial compliance, our corporate law team ensures your business structures are robust.'
+  },
+  { 
+    id: 'advisory', 
+    title: 'Transaction Advisory & M&A', 
+    desc: 'Valuation, deal structuring, due diligence, and capital advisory.',
+    details: 'Comprehensive support through high-stakes transactions, mergers, equity financing, DPIIT startup recognitions, and RBI FEMA cross-border compliance.'
   }
 ];
 
@@ -46,8 +53,8 @@ export default function Services() {
   }, []);
 
   return (
-    <section>
-      <h1 style={{ textAlign: 'center', marginBottom: '3rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Our Services</h1>
+    <section className="subpage-section" style={{ paddingTop: '120px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '2.5rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Our Services</h1>
       
       <div style={styles.container}>
         {/* Sidebar Tabs */}
@@ -68,15 +75,15 @@ export default function Services() {
 
         {/* Dynamic Content Panel */}
         <div style={styles.contentPanel}>
-          <h2 style={{ fontSize: '2rem', color: 'var(--navy-800)' }}>{activeTab.title}</h2>
-          <p style={{ fontSize: '1.1rem', color: 'var(--ink)', marginBottom: '1.5rem', fontWeight: 500 }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', color: 'var(--navy-800)', marginBottom: '1rem' }}>{activeTab.title}</h2>
+          <p style={{ fontSize: '1.05rem', color: 'var(--ink)', marginBottom: '1.5rem', fontWeight: 500, lineHeight: 1.6 }}>
             {activeTab.desc}
           </p>
           <div style={{ height: '1px', background: 'var(--line)', marginBottom: '1.5rem' }}></div>
-          <p style={{ color: 'var(--dim)', lineHeight: '1.8' }}>
+          <p style={{ color: 'var(--dim)', lineHeight: '1.8', fontSize: '0.98rem' }}>
             {activeTab.details}
           </p>
-          <button className="btn solid" style={{ marginTop: '2rem' }}>Request Consultation</button>
+          <Link href="/contact" className="btn solid" style={{ marginTop: '2rem', display: 'inline-block', textDecoration: 'none' }}>Request Consultation</Link>
         </div>
       </div>
     </section>
@@ -86,39 +93,40 @@ export default function Services() {
 const styles = {
   container: {
     display: 'flex',
-    gap: '3rem',
+    gap: '2rem',
     flexWrap: 'wrap',
   },
   tabsList: {
     flex: '1',
-    minWidth: '250px',
+    minWidth: 'min(280px, 100%)',
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',
   },
   tabBtn: {
-    padding: '1rem 1.5rem',
+    padding: '1rem 1.25rem',
     textAlign: 'left',
     background: '#fff',
     border: '1px solid var(--line)',
-    borderRadius: '8px',
+    borderRadius: '10px',
     cursor: 'pointer',
-    fontSize: '1rem',
+    fontSize: '0.95rem',
     fontWeight: 500,
     color: 'var(--ink)',
-    transition: 'all 0.3s ease',
+    transition: 'all 0.2s ease',
   },
   activeTab: {
     background: 'var(--navy-800)',
     color: '#fff',
     border: '1px solid var(--navy-800)',
-    boxShadow: '0 10px 20px rgba(13,29,58,.1)',
-    transform: 'translateX(5px)',
+    boxShadow: '0 8px 16px rgba(13,29,58,.1)',
   },
   contentPanel: {
     flex: '2',
-    minWidth: '300px',
-    padding: '3rem',
+    minWidth: 'min(280px, 100%)',
+    padding: 'clamp(1.5rem, 4vw, 3rem)',
     borderRadius: 'var(--radius-lg)',
+    background: 'var(--cream-card)',
+    border: '1px solid var(--line)'
   }
 };

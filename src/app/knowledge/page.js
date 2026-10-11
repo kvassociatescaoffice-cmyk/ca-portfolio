@@ -1,26 +1,32 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-const articles = [
-  { id: 1, title: 'Union Budget 2024 Analysis', tag: 'Taxation', date: 'Feb 2, 2024' },
-  { id: 2, title: 'New GST E-Invoicing Rules', tag: 'GST', date: 'Jan 15, 2024' },
-  { id: 3, title: 'Compliance Calendar Q4 FY24', tag: 'Compliance', date: 'Dec 28, 2023' },
-  { id: 4, title: 'FDI Policy Updates 2024', tag: 'Corporate Law', date: 'Jan 10, 2024' },
-  { id: 5, title: 'Income Tax Return Filing Guide', tag: 'Taxation', date: 'May 10, 2023' },
-  { id: 6, title: 'Recent Supreme Court GST Rulings', tag: 'GST', date: 'Nov 5, 2023' },
-];
-
-const tags = ['All', 'Taxation', 'GST', 'Compliance', 'Corporate Law'];
+const tags = ['All', 'Taxation', 'Income Tax', 'GST', 'Audit', 'Startups', 'Company Law'];
 
 export default function KnowledgeCenter() {
   const [activeTag, setActiveTag] = useState('All');
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/blogs?limit=50')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+          setArticles(data.data);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const filteredArticles = activeTag === 'All' 
     ? articles 
-    : articles.filter(a => a.tag === activeTag);
+    : articles.filter(a => a.tags?.some(t => t.toLowerCase().includes(activeTag.toLowerCase())));
 
   return (
-    <section>
+    <section className="subpage-section" style={{ paddingTop: '120px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Knowledge Center</h1>
       <p style={{ textAlign: 'center', color: 'var(--dim)', marginBottom: '3rem', fontSize: '1.1rem' }}>
         Stay updated with the latest circulars, analysis, and insights from our experts.
@@ -43,16 +49,29 @@ export default function KnowledgeCenter() {
       </div>
 
       {/* Grid */}
-      <div style={styles.grid}>
-        {filteredArticles.map(article => (
-          <div key={article.id} style={styles.card} className="insight">
-            <span style={styles.tagBadge}>{article.tag}</span>
-            <h3 style={{ marginTop: '1rem', fontSize: '1.25rem', marginBottom: '0.5rem' }}>{article.title}</h3>
-            <p style={{ color: 'var(--dim)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>{article.date}</p>
-            <a href="#" style={{ color: 'var(--orange)', fontWeight: 600 }}>Read Article &rarr;</a>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '60px', color: 'var(--dim)' }}>Loading knowledge articles...</div>
+      ) : filteredArticles.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px', color: 'var(--dim)' }}>No articles found for this category.</div>
+      ) : (
+        <div style={styles.grid}>
+          {filteredArticles.map(article => (
+            <div key={article._id} style={styles.card} className="insight">
+              <span style={styles.tagBadge}>{article.tags?.[0] || 'Advisory'}</span>
+              <h3 style={{ marginTop: '1rem', fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--navy-900)' }}>{article.title}</h3>
+              <p style={{ color: 'var(--dim)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
+                {new Date(article.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </p>
+              <div style={{ fontSize: '0.95rem', color: 'var(--dim)', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                {article.excerpt}
+              </div>
+              <Link href={`/blog/${article.slug}`} style={{ color: 'var(--orange)', fontWeight: 600, textDecoration: 'none', marginTop: 'auto' }}>
+                Read Article &rarr;
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -81,7 +100,7 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))',
     gap: '2rem',
   },
   card: {

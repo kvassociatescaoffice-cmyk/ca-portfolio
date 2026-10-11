@@ -9,13 +9,13 @@ export default function Reviews() {
   ];
 
   return (
-    <section>
+    <section className="subpage-section" style={{ paddingTop: '120px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Client Testimonials</h1>
       <p style={{ textAlign: 'center', color: 'var(--ink)', marginBottom: '3rem', fontSize: '1.1rem' }}>
         Don&apos;t just take our word for it. Here&apos;s what our esteemed clients have to say about our services.
       </p>
 
-      <div className="contact">
+      <div style={styles.grid}>
         {reviews.map((review, i) => (
           <div key={i} style={styles.card} className="insight">
             <div style={{ color: '#fbbf24', fontSize: '1.25rem', marginBottom: '1rem' }}>
