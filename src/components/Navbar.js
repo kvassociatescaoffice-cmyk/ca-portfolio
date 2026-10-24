@@ -26,20 +26,20 @@ export default function Navbar() {
     <>
       {isOpen && <div className="nav-backdrop" onClick={() => setIsOpen(false)} />}
       <nav id="nav">
-        <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 100 }}>
-          <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
-          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
+        <Link href="/" className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 100, flexShrink: 0, textDecoration: 'none' }}>
+          <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '36px', width: 'auto', flexShrink: 0 }} />
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', whiteSpace: 'nowrap', fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
             <span style={{ 
               background: 'linear-gradient(100deg, var(--gold), #ffdf91)', 
               WebkitBackgroundClip: 'text', 
               WebkitTextFillColor: 'transparent',
               fontWeight: '800', 
-              fontSize: '1.25rem',
+              fontSize: 'clamp(0.95rem, 1.3vw, 1.25rem)',
               whiteSpace: 'nowrap'
             }}>
               Kumar Vashishtha
             </span>
-            <span style={{ color: '#fff', fontSize: '0.85rem', fontWeight: '500', letterSpacing: '0.5px', opacity: 0.9 }}>
+            <span style={{ color: '#fff', fontSize: 'clamp(0.78rem, 1vw, 0.92rem)', fontWeight: '500', letterSpacing: '0.4px', opacity: 0.92, whiteSpace: 'nowrap' }}>
               & Associates
             </span>
           </div>

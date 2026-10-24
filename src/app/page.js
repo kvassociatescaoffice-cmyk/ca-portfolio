@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { ArrowUpRight, TrendingUp, TrendingDown, Award, Calendar, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Calendar, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -107,18 +107,6 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="ticker-wrap">
-        <div className="ticker">
-          <span><TrendingUp className="up" size={16} /> BSE SENSEX 73,158.24 (+1.2%)</span>
-          <span><TrendingDown className="down" size={16} /> NIFTY 50 22,212.70 (-0.4%)</span>
-          <span><TrendingUp className="up" size={16} /> GOLD (10g) ₹62,450</span>
-          <span><Award className="medal" size={16} /> Awarded Top Advisory 2024</span>
-          <span><TrendingUp className="up" size={16} /> USD/INR 82.90</span>
-          <span><TrendingUp className="up" size={16} /> BSE SENSEX 73,158.24 (+1.2%)</span>
-          <span><TrendingDown className="down" size={16} /> NIFTY 50 22,212.70 (-0.4%)</span>
-          <span><Award className="medal" size={16} /> Awarded Top Advisory 2024</span>
-        </div>
-      </div>
 
       <section id="services" className="reveal">
         <div className="section-head">

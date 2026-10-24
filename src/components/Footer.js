@@ -7,17 +7,18 @@ export default function Footer() {
         <div className="foot-brand">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <img src="/images/Logo.png" alt="CA India Logo" style={{ height: '40px', width: 'auto' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1, fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap', fontFamily: "var(--font-fraunces), 'Fraunces', serif" }}>
               <span style={{ 
                 background: 'linear-gradient(100deg, var(--gold), #ffdf91)', 
                 WebkitBackgroundClip: 'text', 
                 WebkitTextFillColor: 'transparent',
                 fontWeight: '800', 
-                fontSize: '1.4rem'
+                fontSize: '1.35rem',
+                whiteSpace: 'nowrap'
               }}>
                 Kumar Vashishtha
               </span>
-              <span style={{ color: '#fff', fontSize: '0.9rem', fontWeight: '500', letterSpacing: '0.5px', opacity: 0.9 }}>
+              <span style={{ color: '#fff', fontSize: '0.98rem', fontWeight: '500', letterSpacing: '0.5px', opacity: 0.9, whiteSpace: 'nowrap' }}>
                 & Associates
               </span>
             </div>
