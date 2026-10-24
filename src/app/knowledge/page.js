@@ -106,15 +106,18 @@ const styles = {
   filterBtn: {
     padding: '0.5rem 1.5rem',
     borderRadius: '20px',
-    border: '1px solid var(--border)',
-    background: 'transparent',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'var(--border)',
+    background: '#ffffff',
+    color: 'var(--ink)',
     cursor: 'pointer',
     fontWeight: 500,
     transition: 'all 0.3s ease',
   },
   activeFilter: {
     background: 'var(--primary)',
-    color: '#fff',
+    color: '#ffffff',
     borderColor: 'var(--primary)',
   },
   grid: {
