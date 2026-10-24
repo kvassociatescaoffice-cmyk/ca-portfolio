@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import BlogEditor from './BlogEditor';
 import FaqEditor from './FaqEditor';
 import NewsEditor from './NewsEditor';
-import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard, Bell } from 'lucide-react';
+import CategoryManager from './CategoryManager';
+import { Mail, Edit3, HelpCircle, Newspaper, LogOut, Image as ImageIcon, Eye, X, LayoutDashboard, Bell, Layers } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
@@ -322,6 +323,9 @@ export default function AdminDashboard() {
           </button>
           <button onClick={() => { setActiveTab('notifications'); setPage(1); setSearch(''); }} style={getTabStyle(activeTab === 'notifications')}>
             <Bell size={18} /> Notifications
+          </button>
+          <button onClick={() => { setActiveTab('categories'); setPage(1); setSearch(''); }} style={getTabStyle(activeTab === 'categories')}>
+            <Layers size={18} /> Categories
           </button>
         </aside>
 
@@ -987,6 +991,10 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {activeTab === 'categories' && (
+            <CategoryManager />
           )}
 
         </main>

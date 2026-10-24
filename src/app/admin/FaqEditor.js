@@ -100,15 +100,67 @@ export default function FaqEditor({ faq, onSave, onCancel }) {
         </div>
 
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: '200px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: 'var(--navy-900)' }}>Category</label>
-            <input 
-              type="text" 
-              value={formData.category} 
-              onChange={e => setFormData({...formData, category: e.target.value})}
-              placeholder="e.g. Taxation, Audit"
-              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', outline: 'none' }}
-            />
+          <div style={{ flex: 1, minWidth: '240px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: 'var(--navy-900)' }}>
+              Category (Defaults to &quot;Others&quot; if not matched)
+            </label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <select
+                value={[
+                  'Audit & Assurance',
+                  'Direct Taxation',
+                  'GST & Indirect Tax',
+                  'Corporate Law',
+                  'Valuation Services',
+                  'Compliance Services',
+                  'Transfer Pricing',
+                  'Bookkeeping & Payroll',
+                  'Global Accounting',
+                  'Others'
+                ].includes(formData.category) ? formData.category : (formData.category ? '__custom__' : 'Others')}
+                onChange={e => {
+                  if (e.target.value === '__custom__') {
+                    setFormData({...formData, category: ''});
+                  } else {
+                    setFormData({...formData, category: e.target.value});
+                  }
+                }}
+                style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', outline: 'none', background: '#fff' }}
+              >
+                <option value="Audit & Assurance">Audit & Assurance</option>
+                <option value="Direct Taxation">Direct Taxation</option>
+                <option value="GST & Indirect Tax">GST & Indirect Tax</option>
+                <option value="Corporate Law">Corporate Law</option>
+                <option value="Valuation Services">Valuation Services</option>
+                <option value="Compliance Services">Compliance Services</option>
+                <option value="Transfer Pricing">Transfer Pricing</option>
+                <option value="Bookkeeping & Payroll">Bookkeeping & Payroll</option>
+                <option value="Global Accounting">Global Accounting</option>
+                <option value="Others">Others (Default)</option>
+                <option value="__custom__">+ Create / Enter Custom Category...</option>
+              </select>
+
+              {(![
+                'Audit & Assurance',
+                'Direct Taxation',
+                'GST & Indirect Tax',
+                'Corporate Law',
+                'Valuation Services',
+                'Compliance Services',
+                'Transfer Pricing',
+                'Bookkeeping & Payroll',
+                'Global Accounting',
+                'Others'
+              ].includes(formData.category)) && (
+                <input 
+                  type="text" 
+                  value={formData.category} 
+                  onChange={e => setFormData({...formData, category: e.target.value})}
+                  placeholder="Enter custom category name (defaults to 'Others' if blank)..."
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--orange)', fontSize: '0.95rem', outline: 'none' }}
+                />
+              )}
+            </div>
           </div>
           <div style={{ width: '100px' }}>
             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: 'var(--navy-900)' }}>Order</label>

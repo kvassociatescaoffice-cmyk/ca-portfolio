@@ -131,35 +131,37 @@ export default function Home() {
               <img src="/images/audit.jpg" alt="Audit & Assurance" style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
               <h3>Audit & Assurance</h3>
               <p>Comprehensive statutory, internal, and tax audits that go beyond mere compliance to offer strategic insights.</p>
-              <Link href="/services#audit" className="more">Explore Audit &rarr;</Link>
+              <Link href="/services/audit" className="more">Explore Audit &rarr;</Link>
             </div>
             <div className="item i2">
               <img src="/images/tax.jpg" alt="Direct Taxation" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
               <h3>Direct Taxation</h3>
               <p>Navigate complex tax regulations with confidence. We offer strategic tax planning and representation to minimize liabilities.</p>
-              <Link href="/services#tax" className="more">Tax Services &rarr;</Link>
+              <Link href="/services/taxation" className="more">Tax Services &rarr;</Link>
             </div>
             <div className="item i3">
               <img src="/images/gst.jpg" alt="GST Compliance" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
               <h3>GST Compliance</h3>
               <p>End-to-end GST filings, returns, compliance audits, and regulatory representations.</p>
-              <Link href="/services#gst" className="more">Learn More &rarr;</Link>
+              <Link href="/services/gst" className="more">Learn More &rarr;</Link>
             </div>
             <div className="item i4">
               <img src="/images/law.jpg" alt="Corporate Law" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
               <h3>Corporate Law</h3>
               <p>Company incorporation, ROC compliances, secretarial management, and restructuring.</p>
-              <Link href="/services#corporate" className="more">Learn More &rarr;</Link>
+              <Link href="/services/corporate-law" className="more">Learn More &rarr;</Link>
             </div>
             <div className="item i5">
               <img src="/images/advisory.jpg" alt="Transaction Advisory" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '20px' }} />
-              <h3>Transaction Advisory & M&A</h3>
-              <p>End-to-end support for mergers, acquisitions, valuations, and corporate restructuring.</p>
-              <Link href="/services#advisory" className="more">Explore Advisory &rarr;</Link>
+              <h3>Transaction Advisory & Valuation</h3>
+              <p>End-to-end support for business valuation under IT Act & FEMA, due diligence, and capital advisory.</p>
+              <Link href="/services/valuation" className="more">Explore Valuation &rarr;</Link>
             </div>
           </div>
           <div className="carousel-hint">
-            <span>&larr; Swipe to explore services &rarr;</span>
+            <Link href="/services" style={{ fontWeight: 600, color: 'var(--navy-900)', textDecoration: 'none' }}>
+              Explore All 10 Specialized Practice Areas &rarr;
+            </Link>
           </div>
         </div>
       </section>

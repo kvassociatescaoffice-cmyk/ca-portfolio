@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { categoriesList, getAllServicesFlat } from '../src/lib/servicesData.js';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -66,12 +67,42 @@ const NotificationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+const CategorySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  shortTitle: { type: String },
+  badge: { type: String, default: 'Professional Services' },
+  icon: { type: String, default: 'Briefcase' },
+  color: { type: String, default: '#0d1d3a' },
+  accent: { type: String, default: '#f0663f' },
+  description: { type: String, default: '' },
+  order: { type: Number, default: 0 },
+  isCustom: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+const ServiceSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  slug: { type: String, required: true },
+  category: { type: String, default: 'others' },
+  description: { type: String, required: true },
+  details: { type: String },
+  features: [{ type: String }],
+  order: { type: Number, default: 0 },
+  isPublished: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 const Media = mongoose.models.Media || mongoose.model('Media', MediaSchema);
 const Blog = mongoose.models.Blog || mongoose.model('Blog', BlogSchema);
 const News = mongoose.models.News || mongoose.model('News', NewsSchema);
 const Faq = mongoose.models.Faq || mongoose.model('Faq', FaqSchema);
 const Contact = mongoose.models.Contact || mongoose.model('Contact', ContactSchema);
 const Notification = mongoose.models.Notification || mongoose.model('Notification', NotificationSchema);
+const Category = mongoose.models.Category || mongoose.model('Category', CategorySchema);
+const Service = mongoose.models.Service || mongoose.model('Service', ServiceSchema);
 
 async function seed() {
   console.log("Connecting to MongoDB...");
@@ -398,7 +429,50 @@ async function seed() {
     await Notification.findOneAndUpdate({ title: notif.title, message: notif.message }, notif, { upsert: true, new: true });
   }
 
-  console.log("Database seeded successfully with realistic dummy data for all modules!");
+  // 7. Seed Categories
+  console.log("Seeding Practice Area Categories...");
+  for (let i = 0; i < categoriesList.length; i++) {
+    const cat = categoriesList[i];
+    await Category.findOneAndUpdate(
+      { slug: cat.slug },
+      {
+        name: cat.name,
+        slug: cat.slug,
+        shortTitle: cat.shortTitle,
+        badge: cat.badge,
+        icon: cat.icon,
+        color: cat.color,
+        accent: cat.accent,
+        description: cat.description,
+        order: i,
+        isCustom: false
+      },
+      { upsert: true, new: true }
+    );
+  }
+
+  // 8. Seed Services
+  console.log("Seeding Practice Area Services...");
+  const flatServices = getAllServicesFlat();
+  for (let i = 0; i < flatServices.length; i++) {
+    const s = flatServices[i];
+    const slug = s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    await Service.findOneAndUpdate(
+      { title: s.title },
+      {
+        title: s.title,
+        slug,
+        category: s.categorySlug || 'others',
+        description: s.description,
+        details: s.description,
+        order: i,
+        isPublished: true
+      },
+      { upsert: true, new: true }
+    );
+  }
+
+  console.log("Database seeded successfully with realistic dummy data for all modules including all categories and services!");
   await mongoose.disconnect();
   process.exit(0);
 }

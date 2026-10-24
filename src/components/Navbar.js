@@ -83,51 +83,51 @@ export default function Navbar() {
             <div className={`megamenu ${mobileSubmenu === 'services' ? 'show-mobile' : ''}`}>
             <div className="mega-grid">
               <div className="mega-col">
-                <Link href="/services#audit" onClick={() => setIsOpen(false)}><h4>Audit & Assurance &rarr;</h4></Link>
+                <Link href="/services/audit" onClick={() => setIsOpen(false)}><h4>Audit & Assurance &rarr;</h4></Link>
                 <ul>
-                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Statutory Audit</Link></li>
-                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Internal Audit</Link></li>
-                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Tax Audit</Link></li>
-                  <li><Link href="/services#audit" onClick={() => setIsOpen(false)}>Risk Management</Link></li>
+                  <li><Link href="/services/audit" onClick={() => setIsOpen(false)}>Statutory Audit</Link></li>
+                  <li><Link href="/services/audit" onClick={() => setIsOpen(false)}>Internal Audit</Link></li>
+                  <li><Link href="/services/audit" onClick={() => setIsOpen(false)}>Forensic Audit</Link></li>
+                  <li><Link href="/services/audit" onClick={() => setIsOpen(false)}>Financial Due Diligence</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#tax" onClick={() => setIsOpen(false)}><h4>Direct Taxation &rarr;</h4></Link>
+                <Link href="/services/taxation" onClick={() => setIsOpen(false)}><h4>Direct Tax & Litigation &rarr;</h4></Link>
                 <ul>
-                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Corporate Tax Planning</Link></li>
-                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Tax Compliance</Link></li>
-                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Assessments</Link></li>
-                  <li><Link href="/services#tax" onClick={() => setIsOpen(false)}>Appellate Representation</Link></li>
+                  <li><Link href="/services/taxation" onClick={() => setIsOpen(false)}>Tax Assessments & Appeals</Link></li>
+                  <li><Link href="/services/taxation" onClick={() => setIsOpen(false)}>ITAT & Court Representation</Link></li>
+                  <li><Link href="/services/transfer-pricing" onClick={() => setIsOpen(false)}>Transfer Pricing Benchmarking</Link></li>
+                  <li><Link href="/services/compliance" onClick={() => setIsOpen(false)}>Annual Tax Compliances</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#gst" onClick={() => setIsOpen(false)}><h4>GST & Indirect Tax &rarr;</h4></Link>
+                <Link href="/services/gst" onClick={() => setIsOpen(false)}><h4>GST & Indirect Tax &rarr;</h4></Link>
                 <ul>
-                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Advisory</Link></li>
-                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Filing</Link></li>
-                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>GST Assessments</Link></li>
-                  <li><Link href="/services#gst" onClick={() => setIsOpen(false)}>Compliance Checks</Link></li>
+                  <li><Link href="/services/gst" onClick={() => setIsOpen(false)}>GST Advisory & Opinions</Link></li>
+                  <li><Link href="/services/gst" onClick={() => setIsOpen(false)}>GST Audits & Filings</Link></li>
+                  <li><Link href="/services/gst" onClick={() => setIsOpen(false)}>Litigation & Appeals</Link></li>
+                  <li><Link href="/services/gst" onClick={() => setIsOpen(false)}>Export & Inverted Refunds</Link></li>
                 </ul>
               </div>
               <div className="mega-col">
-                <Link href="/services#corporate" onClick={() => setIsOpen(false)}><h4>Corporate Law &rarr;</h4></Link>
+                <Link href="/services/corporate-law" onClick={() => setIsOpen(false)}><h4>Corporate Law & Advisory &rarr;</h4></Link>
                 <ul>
-                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Company Incorporation</Link></li>
-                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Secretarial Services</Link></li>
-                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>Restructuring</Link></li>
-                  <li><Link href="/services#corporate" onClick={() => setIsOpen(false)}>M&A Support</Link></li>
+                  <li><Link href="/services/corporate-law" onClick={() => setIsOpen(false)}>Company & LLP Incorporation</Link></li>
+                  <li><Link href="/services/valuation" onClick={() => setIsOpen(false)}>Valuation (FEMA & IT Act)</Link></li>
+                  <li><Link href="/services/bookkeeping" onClick={() => setIsOpen(false)}>Bookkeeping & Payroll</Link></li>
+                  <li><Link href="/services/others" onClick={() => setIsOpen(false)}>Other Specialized Services</Link></li>
                 </ul>
               </div>
             </div>
             
             <div className="mega-banner">
               <div className="mega-banner-text">
-                <strong>Need Assistance? Contact Us Today</strong>
-                <span>Contact us now and transform your business compliance strategy today!</span>
+                <strong>Explore All 10 Specialized Practice Areas</strong>
+                <span>Comprehensive audit, advisory, litigation, and cross-border solutions.</span>
               </div>
               <div style={{ display: 'flex', gap: '12px' }}>
-                <Link href="/contact" className="btn solid" style={{ padding: '10px 20px' }}>Call Now</Link>
-                <Link href="/contact" className="btn ghost" style={{ padding: '10px 20px', color: 'var(--navy-900)', borderColor: 'var(--navy-900)' }}>WhatsApp</Link>
+                <Link href="/services" className="btn solid" style={{ padding: '10px 20px' }}>All Services</Link>
+                <Link href="/contact" className="btn ghost" style={{ padding: '10px 20px', color: 'var(--navy-900)', borderColor: 'var(--navy-900)' }}>Consult CA</Link>
               </div>
             </div>
           </div>
